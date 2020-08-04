@@ -10,6 +10,12 @@ from signals.apps.api.v1.fields import (
 )
 from signals.apps.signals.models import Category, CategoryDepartment, ServiceLevelObjective
 
+from signals.apps.api.v1.serializers.country import CountrySerializer
+from signals.apps.signals.models.country import Country
+
+from signals.apps.api.v1.serializers.city import CitySerializer
+from signals.apps.signals.models.city import City
+
 
 class CategoryHALSerializer(HALSerializer):
     serializer_url_field = CategoryHyperlinkedIdentityField
@@ -88,6 +94,8 @@ class PrivateCategorySerializer(HALSerializer):
     new_sla = PrivateCategorySLASerializer(write_only=True)
 
     departments = serializers.SerializerMethodField()
+    country = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
@@ -103,6 +111,12 @@ class PrivateCategorySerializer(HALSerializer):
             'sla',
             'new_sla',
             'departments',
+            'category_level_name1',
+            'category_level_name2',
+            'category_level_name3',
+            'category_level_name4',
+            'country',
+            'city',
         )
         read_only_fields = (
             'id',
@@ -119,6 +133,25 @@ class PrivateCategorySerializer(HALSerializer):
             CategoryDepartment.objects.filter(category_id=obj.pk).order_by('department__code'),
             many=True
         ).data
+
+    
+    def get_country(self, obj):
+        if obj.country:
+            return CountrySerializer(
+                Country.objects.get(id=obj.country.id)
+            ).data
+
+        return CountrySerializer(Country.objects.get(id=2)).data
+
+
+    def get_city(self, obj):
+        if obj.city:
+            return CitySerializer(
+                City.objects.get(id=obj.city.id)
+            ).data
+
+        return CitySerializer(City.objects.get(id=1)).data
+
 
     def update(self, instance, validated_data):
         new_sla = validated_data.pop('new_sla') if 'new_sla' in validated_data else None
