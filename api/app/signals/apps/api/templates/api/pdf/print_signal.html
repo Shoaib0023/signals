@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Melding {{ signal.sia_id }} </title>
+    <style type="text/css">
+        * {
+            font-family: Avenir Next LT W01 Demi,arial,sans-serif;
+            font-weight: normal;
+            font-size: 14px;
+        }
+
+        .divider {
+            border-bottom: 1px #000 solid;
+            width: 100%;
+            height: 1px;
+        }
+
+        .header {
+            width: 100%;
+            top: 0;
+            margin: 0;
+            font-size: 0.8em;
+        }
+
+        .header p {
+            text-align: right;
+            color: #5B6270;
+        }
+
+        .header p span{
+            color: #5B6270;
+        }
+
+        .results {
+            border-collapse: collapse;
+        }
+
+        .results td {
+            vertical-align: top;
+            padding: 6px 2px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .history .description {
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .history .changed {
+            color: gray;
+        }
+
+        .history .divider {
+            margin-top: 15px;
+        }
+
+        h1 {
+            color: #000;
+            font-size: 1.6em;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: #000;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        table {
+            max-width: 100%;
+        }
+
+        @page {
+            size: A4;
+            margin: 1.27cm;
+        }
+    </style>
+</head>
+<body>
+    <div id="header_content">
+        <table class="header" width="100%">
+            <tr>
+                <td width="40%">
+                  <p style="text-align: left;">
+                    <span>Geprint door {% if not user.is_anonymous %}{{ user.username }}{% else %}SIA Systeem{% endif %}</span>
+                  </p>
+                </td>
+                <td width="60%">
+                    <p>
+                        <span>{% now "l, j F Y H:i" %}</span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="divider">&nbsp;</div>
+    <h1>{{ signal.sia_id }}</h1>
+    <div style="width: 680px; height: 250px; background-color: lightgray; margin-bottom: 25px; ">
+        <img src="https://map.data.amsterdam.nl/dist/images/svg/marker.svg" alt="marker" tabindex="0" style="position: absolute; left: 320px; top: 200px; width: 40px; height: 40px;">
+        <img src="https://map.data.amsterdam.nl/maps/topografie?request=GetMap&format=image%2Fpng&version=1.1.1&layers=basiskaart&srs=EPSG%3A28992&width=680&height=250&bbox={{ bbox }}" />
+    </div>
+
+    <h2>Melding</h2>
+    <table class="results" style="page-break-after: always; page-break-before: avoid; -pdf-page-break: avoid; margin: 30px 0 30px 0;">
+        {% if signal.is_child %}
+        <tr>
+            <td>Hoofdmelding</td>
+            <td>: SIA-{{ signal.parent.id }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td style="width: 200px;">Toelichting</td>
+            <td>: {{ signal.text }}</td>
+        </tr>
+        <tr>
+            <td>Overlast</td>
+            <td>: {{ signal.incident_date_start|date:"d-m-Y" }} {{ signal.incident_date_start|date:"H:i" }}</td>
+        </tr>
+        <tr>
+            <td>Stadsdeel</td>
+            <td>: {{ signal.location.get_stadsdeel_display }}</td>
+        </tr>
+        <tr>
+            <td>Adres</td>
+            <td>: {{ signal.location.address_text }}</td>
+        </tr>
+        <tr>
+            <td>Gemeld op</td>
+            <td>: {{ signal.created_at|date:"d-m-Y" }} {{ signal.created_at|date:"H:i" }}</td>
+        </tr>
+        <tr>
+            <td>Hoofdcategorie</td>
+            <td>: {{ signal.category_assignment.category.parent.name }}</td>
+        </tr>
+        <tr>
+            <td>Subcategorie</td>
+            <td>: {{ signal.category_assignment.category.name }}</td>
+        </tr>
+        <tr>
+            <td>Urgentie</td>
+            <td>: {{ signal.priority.get_priority_display }}</td>
+        </tr>
+        <tr>
+            <td>Bron</td>
+            <td>: {{ signal.source }}</td>
+        </tr>
+    </table>
+
+    {% include 'api/pdf/extra_properties.html' with signal=signal %}
+
+    <div class="divider">&nbsp;</div>
+    <h2>Melder</h2>
+    <table class="results" style="page-break-after: avoid; page-break-before: avoid; -pdf-page-break: avoid; margin: 30px 0 30px 0;">
+        <tr>
+            <td style="width: 200px;">E-mail</td>
+            <td>: {{ signal.reporter.email|default:"Onbekend" }}</td>
+        </tr>
+        <tr>
+            <td>Telefoonnummer</td>
+            <td>: {{ signal.reporter.phone|default:"Onbekend" }}</td>
+        </tr>
+        <tr>
+            <td>Verklaring contactgegevens delen</td>
+            <td>: {{ signal.reporter.sharing_allowed|yesno:"Toegestaan,Niet toegestaan" }}</td>
+        </tr>
+    </table>
+
+    <div class="divider">&nbsp;</div>
+    <h2>Foto's</h2>
+    {% if images %}
+        {% for image in images %}
+            <p><img src="{{ image.file.url }}" style="width:680px" alt=""></p>
+        {% endfor %}
+        <br>
+    {% elif jpg_data_urls %}  {# HOTFIX SIG-1473 #}
+        {% for data_url in jpg_data_urls %}
+            {% if data_url %}
+                <p><img src="{{ data_url|safe }}" style="width:680px" alt=""></p>
+            {% else %}
+                <p>Image not available</p>
+            {% endif %}
+        {% endfor %}
+        <br>
+    {% else %}
+        <p>Er zijn geen foto's beschikbaar omdat de melder in SIA geen foto's heeft meegeleverd.</p>
+    {% endif %}
+
+    <div class="divider">&nbsp;</div>
+    <h2>Geschiedenis</h2>
+    {% for history in signal.history.all %}
+    <table class="history" style="page-break-after: avoid; page-break-before: avoid; -pdf-page-break: avoid; margin: 30px 0 30px 0;">
+        <tr>
+            <td class="changed" style="width: 200px; vertical-align:top; overflow-wrap: break-word;">Gewijzigd op {{ history.when|date:"d-m-Y" }} om {{ history.when|date:"H:i:s" }} door {{ history.who|default:"SIA systeem" }}</td>
+            <td class="title" style="vertical-align:top">
+                {{ history.get_action }}<br>
+                {% if history.get_description %}
+                    "{{ history.get_description }}"
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% endfor %}
+
+</body>
+</html>

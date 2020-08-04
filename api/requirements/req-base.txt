@@ -1,0 +1,58 @@
+# Bleeding edge Django
+
+# Django packages
+django-celery-beat
+django-celery-email
+django-celery-results
+django-cors-headers
+django-extensions
+django-filter
+django-imagekit
+django-rest-swagger
+django-storage-swift
+django-storages
+
+# GraphQL
+graphene-django
+
+# Database
+psycopg2-binary
+
+# Requests
+requests
+
+# REST
+djangorestframework
+djangorestframework-gis
+
+# Datapunt packages
+datapunt-authorization-django
+drf_amsterdam
+drf-extensions
+flex
+
+# Documentation
+coreapi
+
+# Celery
+Celery
+
+# Sentry
+raven
+
+# PDF
+lxml
+WeasyPrint
+
+# GELF
+graypy
+pygelf
+
+# Images
+Pillow
+
+# Date util
+python-dateutil
+
+# Elasticsearch
+elasticsearch-dsl==6.4.0

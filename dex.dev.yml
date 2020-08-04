@@ -1,0 +1,35 @@
+issuer: http://localhost:5556
+
+storage:
+  type: postgres
+  config:
+    database: dex_db
+    user: dex
+    password: 66964843358242dbaaa7778d8477c288
+    ssl:
+      mode: disable
+    
+web:
+  http: 0.0.0.0:5556
+
+staticClients:
+- id: signals
+  redirectURIs:
+    - 'http://localhost:3001/manage/incidents'
+    - 'http://127.0.0.1:3001/manage/incidents'
+    - 'http://ec2-52-200-189-81.compute-1.amazonaws.com:3001/manage/incidents'
+  name: 'Signals'
+  secret: ZXhhbXBsZS1hcHAtc2VjcmV0
+
+enablePasswordDB: true
+
+staticPasswords:
+- email: "signals.admin@example.com"
+  hash: "$2a$10$2b2cU8CPhOTaGrs1HRQuAueS7JTT5ZHsHSzYiFPm1leZck7Mc8T4W"  # hash for: password
+  userID: "1"
+  username: "admin"
+  name: "Signals admin"
+
+oauth2:
+  responseTypes: [ "token", "id_token" ]
+  skipApprovalScreen: true
