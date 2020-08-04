@@ -105,6 +105,8 @@ class PrivateSignalViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, Dat
         'status',
         'priority',
         'address',
+        'country',
+        'city',
     )
     ordering_field_mappings = {
         'id': 'id',
@@ -116,6 +118,8 @@ class PrivateSignalViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, Dat
         'status': 'status__state',
         'priority': 'priority__priority',
         'address': 'location__address_text',
+        'country': 'country',
+        'city': 'city'
     }
 
     http_method_names = ['get', 'post', 'patch', 'head', 'options', 'trace']

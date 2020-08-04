@@ -18,6 +18,9 @@ from signals.apps.signals.querysets import SignalQuerySet
 class Signal(CreatedUpdatedModel):
     SOURCE_DEFAULT_ANONYMOUS_USER = 'online'
 
+    country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
+    
     # we need an unique id for external systems.
     # TODO SIG-563 rename `signal_id` to `signal_uuid` to be more specific.
     signal_id = models.UUIDField(default=uuid.uuid4, db_index=True)

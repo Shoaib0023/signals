@@ -67,6 +67,9 @@ def department_choices():
 
 class SignalFilter(FilterSet):
     id = filters.NumberFilter()
+    
+    country = filters.MultipleChoiceFilter(field_name='country')
+    city = filters.MultipleChoiceFilter(field_name='city')
 
     created_before = filters.IsoDateTimeFilter(field_name='created_at', lookup_expr='lte')
     created_after = filters.IsoDateTimeFilter(field_name='created_at', lookup_expr='gte')

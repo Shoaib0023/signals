@@ -37,12 +37,26 @@ from signals.apps.signals import workflow
 from signals.apps.signals.models import Priority, Signal
 
 
+from signals.apps.api.v1.serializers.country import CountrySerializer
+from signals.apps.api.v1.serializers.city import CitySerializer
+
+
 class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
     """
     This serializer is used for the detail endpoint and when updating the instance
     """
     serializer_url_field = PrivateSignalLinksFieldWithArchives
     _display = DisplayField()
+
+    
+    country = CountrySerializer(
+        permission_classes=(SIAPermissions,)
+    )
+
+    city = CitySerializer(
+        permission_classes=(SIAPermissions,)
+    )
+
 
     location = _NestedLocationModelSerializer(
         required=False,
@@ -123,6 +137,8 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
             'incident_date_start',
             'incident_date_end',
             'directing_departments',
+            'country',
+            'city',
         )
         read_only_fields = (
             'id',
@@ -173,6 +189,15 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
     """
     serializer_url_field = PrivateSignalLinksField
     _display = DisplayField()
+
+    country = CountrySerializer(
+        permission_classes=(SIAPermissions,)
+    )
+
+    city = CitySerializer(
+        permission_classes=(SIAPermissions,)
+    )
+
 
     location = _NestedLocationModelSerializer(
         permission_classes=(SIAPermissions,)
@@ -254,6 +279,8 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             'extra_properties',
             'notes',
             'directing_departments',
+            'country',
+            'city',
         )
         read_only_fields = (
             'created_at',
@@ -299,15 +326,21 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
         type_data = validated_data.pop('type_assignment', {})
         type_data['created_by'] = logged_in_user.email
 
+        country_data = validated_data.pop('country')
+        city_data = validated_data.pop('city')
+
         signal = Signal.actions.create_initial(
             validated_data,
             location_data,
             INITIAL_STATUS,
             category_assignment_data,
             reporter_data,
+            country_data,
+            city_data,
             priority_data,
             type_data
         )
+        
         return signal
 
 

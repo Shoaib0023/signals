@@ -35,6 +35,8 @@ from signals.apps.signals.models.type import Type
 
 from signals.apps.signals.models.city import City
 from signals.apps.signals.models.country import Country
+from signals.apps.signals.models.signals_plan import SignalsPlan
+from signals.apps.signals.models.signals_activity import SignalsActivity
 
 # Satisfy Flake8 (otherwise complaints about unused imports):
 __all__ = [
@@ -72,5 +74,7 @@ __all__ = [
     'StoredSignalFilter',
     'Type',
     'Country',
-    'City'
+    'City',
+    'SignalsPlan',
+    'SignalsActivity'
 ]

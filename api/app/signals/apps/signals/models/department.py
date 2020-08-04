@@ -7,6 +7,9 @@ class Department(models.Model):
     name = models.CharField(max_length=255)
     is_intern = models.BooleanField(default=True)
 
+    country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
+
     class Meta:
         permissions = (
             ('sia_department_read', 'Inzien van afdeling instellingen'),  # SIG-2192

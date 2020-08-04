@@ -3,6 +3,9 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.dispatch import Signal as DjangoSignal
 
+from signals.apps.signals.models.country import Country
+from signals.apps.signals.models.city import City
+
 # Declaring custom Django signals for our `SignalManager`.
 
 create_initial = DjangoSignal(providing_args=['signal_obj'])
@@ -33,7 +36,7 @@ def send_signals(to_send):
 class SignalManager(models.Manager):
 
     def _create_initial_no_transaction(self, signal_data, location_data, status_data,
-                                       category_assignment_data, reporter_data, priority_data=None, type_data=None):
+                                       category_assignment_data, reporter_data, country_data, city_data, priority_data=None, type_data=None):
         """Create a new `Signal` object with all related objects.
             If a transaction is needed use SignalManager.create_initial
 
@@ -69,6 +72,19 @@ class SignalManager(models.Manager):
         type_data = type_data or {}  # If type_data is None a Type is created with the default "SIGNAL" value
         Type.objects.create(**type_data, _signal_id=signal.pk)
 
+        # assign country and city to signal
+        if Country.objects.filter(country_name__iexact=country_data["country_name"]).exists():
+            signal.country = Country.objects.get(country_name__iexact=country_data["country_name"])
+        else:
+            country = Country.objects.create(country_name=country_data["country_name"])
+            signal.country = country
+
+        if City.objects.filter(city_name__iexact=city_data["city_name"]).exists():
+            signal.city = City.objects.get(city_name__iexact=city_data["city_name"])
+        else:
+            city = City.objects.create(city_name=city_data["city_name"])
+            signal.city = city
+
         # Set Signal to dependent model instance foreign keys
         signal.location = location
         signal.status = status
@@ -80,7 +96,7 @@ class SignalManager(models.Manager):
         return signal
 
     def create_initial(self, signal_data, location_data, status_data, category_assignment_data,
-                       reporter_data, priority_data=None, type_data=None):
+                       reporter_data, country_data, city_data, priority_data=None, type_data=None):
         """Create a new `Signal` object with all related objects.
 
         :param signal_data: deserialized data dict
@@ -102,6 +118,8 @@ class SignalManager(models.Manager):
                 reporter_data=reporter_data,
                 priority_data=priority_data,
                 type_data=type_data,
+                country_data=country_data,
+                city_data=city_data
             )
 
             #transaction.on_commit(lambda: create_initial.send_robust(sender=self.__class__,

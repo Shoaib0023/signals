@@ -75,6 +75,14 @@ class Category(models.Model):
 
     name = models.CharField(max_length=255)
 
+    category_level_name1 = models.CharField(max_length=255, null=True)
+    category_level_name2 = models.CharField(max_length=255, null=True)
+    category_level_name3 = models.CharField(max_length=255, null=True)
+    category_level_name4 = models.CharField(max_length=255, null=True)
+    
+    country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
+
     # SIG-2397 Handling is replaced by a handling_message
     # Notice: The handling_message will be used in communication (e-mail) to the citizen
     handling = models.CharField(max_length=20, choices=HANDLING_CHOICES, default=HANDLING_REST)

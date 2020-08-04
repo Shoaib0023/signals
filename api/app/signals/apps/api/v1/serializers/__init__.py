@@ -33,6 +33,9 @@ from signals.apps.api.v1.serializers.status_message_template import (
 )
 from signals.apps.api.v1.serializers.stored_signal_filter import StoredSignalFilterSerializer
 
+from signals.apps.api.v1.serializers.country import CountrySerializer
+from signals.apps.api.v1.serializers.city import CitySerializer
+
 __all__ = [
     'PublicSignalAttachmentSerializer',
     'PrivateSignalAttachmentSerializer',
@@ -55,4 +58,6 @@ __all__ = [
     'PrivateCategorySerializer',
     'PublicQuestionSerializerDetail',
     'AbridgedChildSignalSerializer',
+    'CountrySerializer',
+    'CitySerializer',
 ]
