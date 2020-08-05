@@ -13,6 +13,8 @@ class Profile(CreatedUpdatedModel):
     """
     The profile model for a user
     """
+    country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
 
     user = models.OneToOneField(
         to=User,
