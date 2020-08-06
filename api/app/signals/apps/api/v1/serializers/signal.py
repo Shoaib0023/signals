@@ -40,6 +40,10 @@ from signals.apps.signals.models import Priority, Signal
 from signals.apps.api.v1.serializers.country import CountrySerializer
 from signals.apps.api.v1.serializers.city import CitySerializer
 
+from signals.apps.signals.models.country import Country
+from signals.apps.signals.models.city import City
+
+
 
 class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
     """
@@ -348,6 +352,8 @@ class PublicSignalSerializerDetail(HALSerializer):
     status = _NestedPublicStatusModelSerializer(required=False)
     serializer_url_field = PublicSignalLinksField
     _display = serializers.SerializerMethodField(method_name='get__display')
+    country = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
 
     class Meta:
         model = Signal
@@ -360,10 +366,30 @@ class PublicSignalSerializerDetail(HALSerializer):
             'updated_at',
             'incident_date_start',
             'incident_date_end',
+            'country',
+            'city'
         )
 
     def get__display(self, obj):
         return obj.sia_id
+
+    
+    def get_country(self, obj):
+        if obj.country and obj.country.country_name:
+            return CountrySerializer(
+                Country.objects.get(country_name__iexact=obj.country.country_name)
+            ).data
+
+        return None
+
+    def get_city(self, obj):
+        if obj.city and obj.city.city_name:
+            return CitySerializer(
+                City.objects.get(city_name__iexact=obj.city.city_name)
+            ).data
+
+        return None
+
 
 
 class PublicSignalCreateSerializer(serializers.ModelSerializer):
@@ -376,6 +402,9 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
     location = _NestedLocationModelSerializer()
     reporter = _NestedReporterModelSerializer()
     category = _NestedCategoryModelSerializer(source='category_assignment')
+
+    country = CountrySerializer()
+    city = CitySerializer()
 
     extra_properties = SignalExtraPropertiesField(
         required=False,
@@ -402,6 +431,8 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
             'incident_date_start',
             'incident_date_end',
             'extra_properties',
+            'country',
+            'city'
         )
 
     def validate(self, data):
@@ -420,12 +451,12 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         location_data = validated_data.pop('location')
         reporter_data = validated_data.pop('reporter')
         category_assignment_data = validated_data.pop('category_assignment')
-        print("start")
+        country_data = validated_data.pop('country')
+        city_data = validated_data.pop('city')
 
         status_data = {"state": workflow.GEMELD}
         signal = Signal.actions._create_initial_no_transaction(
-            validated_data, location_data, status_data, category_assignment_data, reporter_data)
-        print({"signal": signal})
+            validated_data, location_data, status_data, category_assignment_data, reporter_data, country_data, city_data)
         return signal
 
 

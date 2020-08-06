@@ -34,22 +34,16 @@ class PublicSignalViewSet(PublicSignalGenericViewSet):
     def list(self, *args, **kwargs):
         raise Http404
 
-    def create(self, request):
-        print("start")
+    def create(self, request)
         serializer = PublicSignalCreateSerializer(
         data=request.data, context=self.get_serializer_context())
         serializer.is_valid(raise_exception=True)
-        #print("pre-save")
         signal = serializer.save()
-        #print("post-save")
         data = PublicSignalSerializerDetail(signal, context=self.get_serializer_context()).data
-        #signal_obj = Signal.objects.get(signal_id=signal.signal_id)
-        #print(obj)
        	return Response(data, status= status.HTTP_201_CREATED)
  
     def retrieve(self, request, signal_id):
         signal = Signal.objects.get(signal_id=signal_id)
-
         data = PublicSignalSerializerDetail(signal, context=self.get_serializer_context()).data
         return Response(data)
 
