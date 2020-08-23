@@ -18,8 +18,8 @@ from signals.apps.api.v1.serializers.city import CitySerializer
 class PrivateDepartmentSerializerList(HALSerializer):
     _display = DisplayField()
     categories = serializers.SerializerMethodField()
-    country = serializers.SerializerMethodField()
-    city = serializers.SerializerMethodField()
+    country = serializers.SerializerMethodField(required=False)
+    city = serializers.SerializerMethodField(required=False)
 
     class Meta:
         model = Department
@@ -39,8 +39,8 @@ class PrivateDepartmentSerializerList(HALSerializer):
         categories = []
         for category in list(obj.category_set.filter(is_active=True)):
             categories.append([category.category_level_name1, category.category_level_name2, category.category_level_name3, category.category_level_name4])
-        
-        return list(categories) 
+
+        return list(categories)
 
        # return list(obj.category_set.filter(is_active=True).values_list('name', flat=True))
 
@@ -50,7 +50,7 @@ class PrivateDepartmentSerializerList(HALSerializer):
                 Country.objects.get(id=obj.country.id)
             ).data
 
-        return CountrySerializer(Country.objects.get(id=2)).data
+        return None
 
     def get_city(self, obj):
         if obj.city:
@@ -58,7 +58,7 @@ class PrivateDepartmentSerializerList(HALSerializer):
                 City.objects.get(id=obj.city.id)
             ).data
 
-        return CitySerializer(City.objects.get(id=1)).data
+        return None
 
 
 
@@ -149,9 +149,9 @@ class PrivateDepartmentSerializerDetail(HALSerializer):
     categories = CategoryDepartmentSerializer(source='active_categorydepartment_set',
                                               many=True,
                                               required=False)
-    
-    country = CountrySerializer()
-    city = CitySerializer()
+
+    country = CountrySerializer(required=False)
+    city = CitySerializer(required=False)
 
     class Meta:
         model = Department
@@ -175,8 +175,8 @@ class PrivateDepartmentSerializerDetail(HALSerializer):
             category_department.save()
 
     def create(self, validated_data):
-        country_data = validated_data.pop('country')
-        city_data = validated_data.pop('city')
+        country_data = validated_data.pop('country', None)
+        city_data = validated_data.pop('city', None)
 
         categorydepartment_set_validated_data = None
         if 'active_categorydepartment_set' in validated_data:
@@ -185,17 +185,19 @@ class PrivateDepartmentSerializerDetail(HALSerializer):
         instance = super(PrivateDepartmentSerializerDetail, self).create(validated_data)
 
         # get country object if exists else create new
-        if Country.objects.filter(country_name__iexact=country_data["country_name"]).exists():
-            instance.country = Country.objects.get(country_name__iexact=country_data["country_name"])
-        else:
-            country = Country.objects.create(country_name=country_data["country_name"])
-            instance.country = country
+        if country_data and country_data["country_name"]:
+            if Country.objects.filter(country_name__iexact=country_data["country_name"]).exists():
+                instance.country = Country.objects.get(country_name__iexact=country_data["country_name"])
+            else:
+                country = Country.objects.create(country_name=country_data["country_name"])
+                instance.country = country
 
-        if City.objects.filter(city_name__iexact=city_data["city_name"]).exists():
-            instance.city = City.objects.get(city_name__iexact=city_data["city_name"])
-        else:
-            city = City.objects.create(city_name=city_data["city_name"])
-            instance.city = city
+        if city_data and city_data["city_name"]:
+            if City.objects.filter(city_name__iexact=city_data["city_name"]).exists():
+                instance.city = City.objects.get(city_name__iexact=city_data["city_name"])
+            else:
+                city = City.objects.create(city_name=city_data["city_name"])
+                instance.city = city
 
         if categorydepartment_set_validated_data:
             self._save_category_department(
@@ -204,7 +206,7 @@ class PrivateDepartmentSerializerDetail(HALSerializer):
             )
 
         instance.save()
-        
+
         instance.refresh_from_db()
         return instance
 
