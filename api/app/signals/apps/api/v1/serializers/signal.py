@@ -39,6 +39,7 @@ from signals.apps.signals.models import Priority, Signal
 
 from signals.apps.api.v1.serializers.country import CountrySerializer
 from signals.apps.api.v1.serializers.city import CitySerializer
+from signals.apps.api.v1.serializers.city_object import CityObjectSerializer
 
 from signals.apps.signals.models.country import Country
 from signals.apps.signals.models.city import City
@@ -63,6 +64,10 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
         permission_classes=(SIAPermissions,)
     )
 
+    city_object = CityObjectSerializer(
+        many=True,
+        required=False
+    )
 
     location = _NestedLocationModelSerializer(
         required=False,
@@ -146,6 +151,7 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
             'directing_departments',
             'country',
             'city',
+            'city_object',
         )
         read_only_fields = (
             'id',
@@ -207,6 +213,10 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
         permission_classes=(SIAPermissions,)
     )
 
+    city_object = CityObjectSerializer(
+        many=True,
+        required=False
+    )
 
     location = _NestedLocationModelSerializer(
         permission_classes=(SIAPermissions,)
@@ -291,6 +301,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             'finished_by',
             'country',
             'city',
+            'city_object',
         )
         read_only_fields = (
             'created_at',

@@ -35,6 +35,7 @@ from signals.apps.api.v1.serializers.stored_signal_filter import StoredSignalFil
 
 from signals.apps.api.v1.serializers.country import CountrySerializer
 from signals.apps.api.v1.serializers.city import CitySerializer
+from signals.apps.api.v1.serializers.city_object import CityObjectSerializer
 
 __all__ = [
     'PublicSignalAttachmentSerializer',
@@ -60,4 +61,5 @@ __all__ = [
     'AbridgedChildSignalSerializer',
     'CountrySerializer',
     'CitySerializer',
+    'CityObjectSerializer'
 ]

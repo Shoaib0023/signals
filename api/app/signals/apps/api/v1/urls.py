@@ -18,7 +18,8 @@ from signals.apps.api.v1.views import (  # MLPredictCategoryView,  # V1 disabled
     PublicSignalViewSet,
     SignalCategoryRemovedAfterViewSet,
     StatusMessageTemplatesViewSet,
-    StoredSignalFilterViewSet
+    StoredSignalFilterViewSet,
+    CityObjectViewSet
 )
 from signals.apps.feedback.views import FeedbackViewSet, StandardAnswerViewSet
 from signals.apps.search.views import SearchView
@@ -32,6 +33,8 @@ public_router.register(r'public/signals', PublicSignalViewSet, basename='public-
 public_router.register(r'public/feedback/standard_answers', StandardAnswerViewSet, basename='feedback-standard-answers')
 public_router.register(r'public/feedback/forms', FeedbackViewSet, basename='feedback-forms')
 public_router.register(r'public/areas', PublicAreasViewSet, basename='public-areas')
+public_router.register(r'public/city_object', CityObjectViewSet, basename='city_object')
+
 
 # Private API
 private_router = SignalsRouterVersion1()
