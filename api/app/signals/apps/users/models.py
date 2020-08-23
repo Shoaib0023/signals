@@ -15,7 +15,8 @@ class Profile(CreatedUpdatedModel):
     """
     country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
-
+    _type = models.CharField(max_length=100, null=True, blank=True)
+    
     user = models.OneToOneField(
         to=User,
         related_name='profile',

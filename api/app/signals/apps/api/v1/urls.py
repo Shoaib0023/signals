@@ -23,6 +23,7 @@ from signals.apps.api.v1.views import (  # MLPredictCategoryView,  # V1 disabled
 from signals.apps.feedback.views import FeedbackViewSet, StandardAnswerViewSet
 from signals.apps.search.views import SearchView
 from signals.apps.users.v1.views import PermissionViewSet, RoleViewSet, UserViewSet
+from signals.apps.api.v1.views.signals_plan import PrivateSignalsPlanViewset
 
 # Public API
 public_router = SignalsRouterVersion1()
@@ -42,6 +43,7 @@ private_router.register(r'private/permissions', PermissionViewSet, basename='per
 private_router.register(r'private/departments', PrivateDepartmentViewSet, basename='department')
 private_router.register(r'private/categories', PrivateCategoryViewSet, basename='private-category')
 private_router.register(r'private/areas', PrivateAreasViewSet, basename='private-areas')
+private_router.register(r'private/signals_plan', PrivateSignalsPlanViewset, basename='private-signalplan')
 
 # Combined API
 base_router = SignalsRouterVersion1()

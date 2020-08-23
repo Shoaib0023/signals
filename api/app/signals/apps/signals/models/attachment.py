@@ -32,6 +32,7 @@ class Attachment(CreatedUpdatedModel):
     )
     mimetype = models.CharField(max_length=30, blank=False, null=False)
     is_image = models.BooleanField(default=False)
+    is_issue_finish_image = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('created_at',)

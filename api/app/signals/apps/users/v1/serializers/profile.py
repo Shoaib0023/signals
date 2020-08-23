@@ -32,7 +32,8 @@ class ProfileListSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'country',
-            'city'
+            'city',
+            '_type'
         )
 
     def get_departments(self, obj):
@@ -74,7 +75,8 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'city',
-            'country'
+            'country',
+            '_type'
         )
 
     def get_departments(self, obj):

@@ -75,10 +75,10 @@ class Category(models.Model):
 
     name = models.CharField(max_length=255)
 
-    category_level_name1 = models.CharField(max_length=255, null=True)
-    category_level_name2 = models.CharField(max_length=255, null=True)
-    category_level_name3 = models.CharField(max_length=255, null=True)
-    category_level_name4 = models.CharField(max_length=255, null=True)
+    category_level_name1 = models.CharField(max_length=255, null=True, blank=True)
+    category_level_name2 = models.CharField(max_length=255, null=True, blank=True)
+    category_level_name3 = models.CharField(max_length=255, null=True, blank=True)
+    category_level_name4 = models.CharField(max_length=255, null=True, blank=True)
     
     country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)

@@ -49,6 +49,7 @@ class SignalUpdateImageSerializer(serializers.ModelSerializer):
             'id',
             'signal_id',
             'image',
+            'issue_final_image'
         )
 
     def create(self, validated_data):
@@ -63,9 +64,26 @@ class SignalUpdateImageSerializer(serializers.ModelSerializer):
 
         return len(image_attachments) > 0
 
+       
+    def _issue_final_image_attachment_exists(self):
+        signal_id = self.initial_data.get('signal_id')
+        signal = Signal.objects.get(signal_id=signal_id)
+        image_attachments = signal.attachments.filter(is_image=True, is_issue_finish_image=True)
+
+        return len(image_attachments) > 0
+
+
     def validate(self, attrs):
-        if self._image_attachment_exists():
-            raise PermissionDenied("Melding is reeds van foto voorzien")
+        is_issue_finish = self.initial_data.get('issue_finish', None)
+
+        if is_issue_finish is None or is_issue_finish is False:
+            if self._image_attachment_exists():
+                raise PermissionDenied("Melding is reeds van foto voorzien")
+
+        else:
+            if self._issue_final_image_attachment_exists():
+                raise PermissionDenied("Melding is reeds van foto voorzien")
+
 
         image = self.initial_data.get('image', False)
         if image:
@@ -76,10 +94,21 @@ class SignalUpdateImageSerializer(serializers.ModelSerializer):
             raise ValidationError("Foto is een verplicht veld.")
 
         attrs['image'] = image
+        attrs['issue_finish'] = True if is_issue_finish else False
         return attrs
 
     def update(self, instance, validated_data):
         image = validated_data['image']
+        issue_finish = validated_data['issue_finish']
+
+        if issue_finish:
+            if instance.issue_final_image:
+                raise PermissionDenied("Melding is reeds van foto voorzien.")
+
+            if image:
+                Signal.actions.add_image(image, instance, issue_finish)
+
+            return instance
 
         # Only allow adding a photo if none is set.
         if instance.image:

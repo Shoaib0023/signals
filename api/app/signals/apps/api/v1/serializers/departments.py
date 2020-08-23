@@ -17,7 +17,7 @@ from signals.apps.api.v1.serializers.city import CitySerializer
 
 class PrivateDepartmentSerializerList(HALSerializer):
     _display = DisplayField()
-    category_names = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
     country = serializers.SerializerMethodField()
     city = serializers.SerializerMethodField()
 
@@ -30,13 +30,19 @@ class PrivateDepartmentSerializerList(HALSerializer):
             'name',
             'code',
             'is_intern',
-            'category_names',
+            'categories',
             'country',
             'city'
         )
 
-    def get_category_names(self, obj):
-        return list(obj.category_set.filter(is_active=True).values_list('name', flat=True))
+    def get_categories(self, obj):
+        categories = []
+        for category in list(obj.category_set.filter(is_active=True)):
+            categories.append([category.category_level_name1, category.category_level_name2, category.category_level_name3, category.category_level_name4])
+        
+        return list(categories) 
+
+       # return list(obj.category_set.filter(is_active=True).values_list('name', flat=True))
 
     def get_country(self, obj):
         if obj.country:

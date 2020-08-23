@@ -109,8 +109,8 @@ class SignalManager(models.Manager):
         :returns: Signal object
         """
 
-        #with transaction.atomic():
-        signal = self._create_initial_no_transaction(
+        with transaction.atomic():
+            signal = self._create_initial_no_transaction(
                 signal_data=signal_data,
                 location_data=location_data,
                 status_data=status_data,
@@ -122,8 +122,8 @@ class SignalManager(models.Manager):
                 city_data=city_data
             )
 
-            #transaction.on_commit(lambda: create_initial.send_robust(sender=self.__class__,
-                                                                     #signal_obj=signal))
+            transaction.on_commit(lambda: create_initial.send_robust(sender=self.__class__,
+                                                                     signal_obj=signal))
 
         return signal
 
@@ -265,10 +265,10 @@ class SignalManager(models.Manager):
 
         return signal
 
-    def add_image(self, image, signal):
-        return self.add_attachment(image, signal)
+    def add_image(self, image, signal, issue_finish=False):
+        return self.add_attachment(image, signal, issue_finish)
 
-    def add_attachment(self, file, signal):
+    def add_attachment(self, file, signal, issue_finish):
         from .models import Attachment
 
         with transaction.atomic():
@@ -281,6 +281,9 @@ class SignalManager(models.Manager):
             attachment._signal = signal
             attachment.file = file
             attachment.save()
+
+            if issue_finish:
+                attachment.is_issue_finish_image = True
 
             if attachment.is_image:
                 add_image.send_robust(sender=self.__class__, signal_obj=signal)
@@ -608,6 +611,11 @@ class SignalManager(models.Manager):
                     'directing_departments': directing_departments,
                     'prev_directing_departments': previous_directing_departments
                 }))
+               
+            if 'finished_by' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.finished_by = data['finished_by']
+                locked_signal.save()
 
             # Send out all Django signals:
             transaction.on_commit(lambda: send_signals(to_send))

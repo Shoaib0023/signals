@@ -1,0 +1,71 @@
+Category1,Category2,Category3,Category4,Afdeling (Department)
+Afval,Afvalbakken,Afvalbak,Aanplak/ bekladding,Milieubeheer
+Afval,Vuilniszak/ dozen,Naast verzamelcontainer,,HWB
+Afval,Afvalbakken,Afvalbak,Afval naast afvalbak,Milieubeheer
+Afval,Afvalbakken,Afvalbak,Beschadigd,Milieubeheer
+Afval,Afvalbakken,Afvalbak,Vies/ vervuild,HVB
+Afval,Afvalbakken,Afvalbak,Vol,HVB
+Afval,Afvalbakken,Hondenpoepafvalbak,Aanplak/ bekladding,Milieubeheer
+Afval,Afvalbakken,Hondenpoepafvalbak,Afval naast afvalbak,Milieubeheer
+Afval,Afvalbakken,Hondenpoepafvalbak,Beschadigd,Milieubeheer
+Afval,Afvalbakken,Hondenpoepafvalbak,Vies/ vervuild,HVB
+Afval,Afvalbakken,Hondenpoepafvalbak,Vol,HVB
+Afval,Vervuiling jaarwisseling,Brandresten,,Milieubeheer
+Afval,Vervuiling jaarwisseling,Vuurwerkresten,,HVB
+Afval,Verzamelcontainer,Textiel,Afval naast container,HWB
+Afval,Vuilniszak/ dozen,Op openbare weg,,HWB
+Afval,Zwerfvuil,Op openbare weg,,HVB
+Afval,Zwerfvuil,Tussen het groen,,Milieubeheer
+Afval,Chemisch afval,Accu,,HMS
+Afval,Zwerfvuil,In het water,,Waterbeheersing
+Afval,Chemisch afval,Asbest,,HMS
+Afval,Chemisch afval,Klein chemisch afval,,HMS
+Afval,Grofvuil,Bouw- en sloopafval,,Handhavingsorganisatie
+Afval,Grofvuil,Naast verzamelcontainer,,HMS
+Afval,Grofvuil,Op openbare weg,,Handhavingsorganisatie
+Afval,Inzameling huisvuil,Laadkist,Beschadigd,HMS
+Afval,Inzameling huisvuil,Laadkist,Verwijderen,HMS
+Afval,Inzameling huisvuil,Laadkist,Vies/ vervuild,HMS
+Afval,Inzameling huisvuil,Laadkist,Vol,HMS
+Afval,Inzameling huisvuil,Minicontainer GFT,Niet geleegd,HMS
+Afval,Inzameling huisvuil,Minicontainer GFT,Niet goed aangeboden,HMS
+Afval,Inzameling huisvuil,Minicontainer papier,Niet geleegd,HMS
+Afval,Inzameling huisvuil,Minicontainer papier,Niet goed aangeboden,HMS
+Afval,Inzameling huisvuil,Minicontainer plastic,Niet geleegd,HMS
+Afval,Inzameling huisvuil,Minicontainer plastic,Niet goed aangeboden,HMS
+Afval,Inzameling huisvuil,Minicontainer restafval,Niet geleegd,HMS
+Afval,Inzameling huisvuil,Minicontainer restafval,Niet goed aangeboden,HMS
+Afval,Inzameling huisvuil,Oud papier,Niet goed aangeboden,HMS
+Afval,Inzameling huisvuil,Oud papier,Niet opgehaald,HMS
+Afval,Vervuiling jaarwisseling,Kerstbomen,,HMS
+Afval,Verzamelcontainer,GFT,Aanplak/ bekladding,HMS
+Afval,Verzamelcontainer,GFT,Afval naast container,HMS
+Afval,Verzamelcontainer,GFT,Beschadigd,HMS
+Afval,Verzamelcontainer,GFT,Vies/ vervuild,HMS
+Afval,Verzamelcontainer,GFT,Vol,HMS
+Afval,Verzamelcontainer,Glas,Aanplak/ bekladding,HMS
+Afval,Verzamelcontainer,Glas,Afval naast container,HMS
+Afval,Verzamelcontainer,Glas,Beschadigd,HMS
+Afval,Verzamelcontainer,Glas,Vies/ vervuild,HMS
+Afval,Verzamelcontainer,Glas,Vol,HMS
+Afval,Verzamelcontainer,Papier,Aanplak/ bekladding,HMS
+Afval,Verzamelcontainer,Papier,Afval naast container,HMS
+Afval,Verzamelcontainer,Papier,Beschadigd,HMS
+Afval,Verzamelcontainer,Papier,Vies/ vervuild,HMS
+Afval,Verzamelcontainer,Papier,Vol,HMS
+Afval,Verzamelcontainer,Plastic,Aanplak/ bekladding,HMS
+Afval,Verzamelcontainer,Plastic,Afval naast container,HMS
+Afval,Verzamelcontainer,Plastic,Beschadigd,HMS
+Afval,Verzamelcontainer,Plastic,Vies/ vervuild,HMS
+Afval,Verzamelcontainer,Plastic,Vol,HMS
+Afval,Verzamelcontainer,Restafval,Aanplak/ bekladding,HMS
+Afval,Verzamelcontainer,Restafval,Afval naast container,HMS
+Afval,Verzamelcontainer,Restafval,Beschadigd,HMS
+Afval,Verzamelcontainer,Restafval,Vies/ vervuild,HMS
+Afval,Verzamelcontainer,Restafval,Vol,HMS
+Afval,Verzamelcontainer,Textiel,Aanplak/ bekladding,HMS
+Afval,Verzamelcontainer,Textiel,Beschadigd,HMS
+Afval,Verzamelcontainer,Textiel,Vies/ vervuild,HMS
+Afval,Verzamelcontainer,Textiel,Vol,HMS
+Afval,Vuilniszak/ dozen,Niet opgehaald,,HMS
+

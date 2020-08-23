@@ -20,7 +20,7 @@ class Signal(CreatedUpdatedModel):
 
     country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
-    
+    finished_by = models.CharField(max_length=200, null=True, blank=True) 
     # we need an unique id for external systems.
     # TODO SIG-563 rename `signal_id` to `signal_uuid` to be more specific.
     signal_id = models.UUIDField(default=uuid.uuid4, db_index=True)
@@ -89,6 +89,11 @@ class Signal(CreatedUpdatedModel):
     def image_crop(self):
         attachment = self.attachments.filter(is_image=True).first()
         return attachment.image_crop if self.image else ''
+
+    @property
+    def issue_final_image(self):
+        attachment = self.attachments.filter(is_image=True, is_issue_finish_image=True).first()
+        return attachment.file if attachment else ""
 
     class Meta:
         permissions = (

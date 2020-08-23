@@ -140,6 +140,7 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
             'updated_at',
             'incident_date_start',
             'incident_date_end',
+            'finished_by',
             'directing_departments',
             'country',
             'city',
@@ -283,6 +284,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             'extra_properties',
             'notes',
             'directing_departments',
+            'finished_by',
             'country',
             'city',
         )
@@ -366,6 +368,7 @@ class PublicSignalSerializerDetail(HALSerializer):
             'updated_at',
             'incident_date_start',
             'incident_date_end',
+            'finished_by',
             'country',
             'city'
         )
