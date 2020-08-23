@@ -49,18 +49,16 @@ class PrivateSignalsPlanSerializerList(HALSerializer):
         return None
 
     def get_updated_by(self, obj):
-        # if obj.updated_by and obj.updated_by.email:
-        #     return UserListHALSerializer(
-        #         User.objects.get(email=obj.updated_by.email)
-        #     ).data
+        if obj.updated_by and obj.updated_by.email:
+            return UserListHALSerializer(
+                User.objects.get(email=obj.updated_by.email)
+            ).data
 
         return None
 
 
 class PrivateSignalsPlanSerializerDetail(HALSerializer):
     _display = DisplayField()
-    # signal = PublicSignalSerializerDetail()
-    # emp =  _NestedReporterModelSerializer()
     signal_id = serializers.CharField()
     reporter_id = serializers.CharField()
     updated_by = UserDetailHALSerializer(required=False)
@@ -71,6 +69,7 @@ class PrivateSignalsPlanSerializerDetail(HALSerializer):
         model = SignalsPlan
         fields = (
           '_display',
+          'id',
           'signal_id',
           'reporter_id',
           'updated_by',
@@ -129,4 +128,3 @@ class PrivateSignalsPlanSerializerDetail(HALSerializer):
         instance.refresh_from_db()
 
         return instance
-

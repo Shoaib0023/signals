@@ -37,6 +37,8 @@ from signals.apps.signals.models.city import City
 from signals.apps.signals.models.country import Country
 from signals.apps.signals.models.signals_plan import SignalsPlan
 from signals.apps.signals.models.signals_activity import SignalsActivity
+from signals.apps.signals.models.city_object import CityObject
+from signals.apps.signals.models.city_object_assignment import CityObjectAssignment
 
 # Satisfy Flake8 (otherwise complaints about unused imports):
 __all__ = [
@@ -76,5 +78,7 @@ __all__ = [
     'Country',
     'City',
     'SignalsPlan',
-    'SignalsActivity'
+    'SignalsActivity',
+    'CityObject',
+    'CityObjectAssignment'
 ]
