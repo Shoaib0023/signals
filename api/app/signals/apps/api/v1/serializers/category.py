@@ -34,6 +34,10 @@ class CategoryHALSerializer(HALSerializer):
             'is_active',
             'description',
             'handling_message',
+            'category_level_name1',
+            'category_level_name2',
+            'category_level_name3',
+            'category_level_name4',
         )
 
     def get_departments(self, obj):
@@ -56,6 +60,10 @@ class ParentCategoryHALSerializer(HALSerializer):
             'name',
             'slug',
             'sub_categories',
+            'category_level_name1',
+            'category_level_name2',
+            'category_level_name3',
+            'category_level_name4',
         )
 
 
@@ -134,7 +142,7 @@ class PrivateCategorySerializer(HALSerializer):
             many=True
         ).data
 
-    
+
     def get_country(self, obj):
         if obj.country:
             return CountrySerializer(

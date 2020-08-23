@@ -52,12 +52,14 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
     serializer_url_field = PrivateSignalLinksFieldWithArchives
     _display = DisplayField()
 
-    
+
     country = CountrySerializer(
+        required=False,
         permission_classes=(SIAPermissions,)
-    )
+        )
 
     city = CitySerializer(
+        required=False,
         permission_classes=(SIAPermissions,)
     )
 
@@ -196,10 +198,12 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
     _display = DisplayField()
 
     country = CountrySerializer(
+        required=False,
         permission_classes=(SIAPermissions,)
     )
 
     city = CitySerializer(
+        required=False,
         permission_classes=(SIAPermissions,)
     )
 
@@ -332,8 +336,8 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
         type_data = validated_data.pop('type_assignment', {})
         type_data['created_by'] = logged_in_user.email
 
-        country_data = validated_data.pop('country')
-        city_data = validated_data.pop('city')
+        country_data = validated_data.pop('country', None)
+        city_data = validated_data.pop('city', None)
 
         signal = Signal.actions.create_initial(
             validated_data,
@@ -346,7 +350,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             priority_data,
             type_data
         )
-        
+
         return signal
 
 
@@ -354,8 +358,8 @@ class PublicSignalSerializerDetail(HALSerializer):
     status = _NestedPublicStatusModelSerializer(required=False)
     serializer_url_field = PublicSignalLinksField
     _display = serializers.SerializerMethodField(method_name='get__display')
-    country = serializers.SerializerMethodField()
-    city = serializers.SerializerMethodField()
+    country = serializers.SerializerMethodField(required=False)
+    city = serializers.SerializerMethodField(required=False)
 
     class Meta:
         model = Signal
@@ -376,7 +380,7 @@ class PublicSignalSerializerDetail(HALSerializer):
     def get__display(self, obj):
         return obj.sia_id
 
-    
+
     def get_country(self, obj):
         if obj.country and obj.country.country_name:
             return CountrySerializer(
@@ -406,8 +410,8 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
     reporter = _NestedReporterModelSerializer()
     category = _NestedCategoryModelSerializer(source='category_assignment')
 
-    country = CountrySerializer()
-    city = CitySerializer()
+    country = CountrySerializer(required=False)
+    city = CitySerializer(required=False)
 
     extra_properties = SignalExtraPropertiesField(
         required=False,
@@ -454,8 +458,8 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         location_data = validated_data.pop('location')
         reporter_data = validated_data.pop('reporter')
         category_assignment_data = validated_data.pop('category_assignment')
-        country_data = validated_data.pop('country')
-        city_data = validated_data.pop('city')
+        country_data = validated_data.pop('country', None)
+        city_data = validated_data.pop('city', None)
 
         status_data = {"state": workflow.GEMELD}
         signal = Signal.actions._create_initial_no_transaction(

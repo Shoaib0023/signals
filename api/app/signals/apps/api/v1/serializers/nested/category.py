@@ -22,6 +22,11 @@ class _NestedCategoryModelSerializer(SIAModelSerializer):
 
     text = serializers.CharField(required=False)
     departments = serializers.SerializerMethodField()
+    category_level_name1 = serializers.CharField(source='category.category_level_name1', read_only=True)
+    category_level_name2 = serializers.CharField(source='category.category_level_name2', read_only=True)
+    category_level_name3 = serializers.CharField(source='category.category_level_name3', read_only=True)
+    category_level_name4 = serializers.CharField(source='category.category_level_name4', read_only=True)
+
 
     class Meta:
         model = CategoryAssignment
@@ -35,6 +40,10 @@ class _NestedCategoryModelSerializer(SIAModelSerializer):
             'departments',
             'created_by',
             'text',
+            'category_level_name1',
+            'category_level_name2',
+            'category_level_name3',
+            'category_level_name4',
         )
         read_only_fields = (
             'sub',
@@ -43,6 +52,10 @@ class _NestedCategoryModelSerializer(SIAModelSerializer):
             'main_slug',
             'created_by',
             'departments',
+            'category_level_name1',
+            'category_level_name2',
+            'category_level_name3',
+            'category_level_name4',
         )
 
     def get_departments(self, obj):

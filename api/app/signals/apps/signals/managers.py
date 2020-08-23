@@ -73,17 +73,19 @@ class SignalManager(models.Manager):
         Type.objects.create(**type_data, _signal_id=signal.pk)
 
         # assign country and city to signal
-        if Country.objects.filter(country_name__iexact=country_data["country_name"]).exists():
-            signal.country = Country.objects.get(country_name__iexact=country_data["country_name"])
-        else:
-            country = Country.objects.create(country_name=country_data["country_name"])
-            signal.country = country
+        if country_data and country_data["country_name"]:
+            if Country.objects.filter(country_name__iexact=country_data["country_name"]).exists():
+                signal.country = Country.objects.get(country_name__iexact=country_data["country_name"])
+            else:
+                country = Country.objects.create(country_name=country_data["country_name"])
+                signal.country = country
 
-        if City.objects.filter(city_name__iexact=city_data["city_name"]).exists():
-            signal.city = City.objects.get(city_name__iexact=city_data["city_name"])
-        else:
-            city = City.objects.create(city_name=city_data["city_name"])
-            signal.city = city
+        if city_data and city_data["city_name"]:
+            if City.objects.filter(city_name__iexact=city_data["city_name"]).exists():
+                signal.city = City.objects.get(city_name__iexact=city_data["city_name"])
+            else:
+                city = City.objects.create(city_name=city_data["city_name"])
+                signal.city = city
 
         # Set Signal to dependent model instance foreign keys
         signal.location = location
@@ -122,8 +124,8 @@ class SignalManager(models.Manager):
                 city_data=city_data
             )
 
-            transaction.on_commit(lambda: create_initial.send_robust(sender=self.__class__,
-                                                                     signal_obj=signal))
+        transaction.on_commit(lambda: create_initial.send_robust(sender=self.__class__,
+                                                                 signal_obj=signal))
 
         return signal
 
@@ -611,7 +613,7 @@ class SignalManager(models.Manager):
                     'directing_departments': directing_departments,
                     'prev_directing_departments': previous_directing_departments
                 }))
-               
+
             if 'finished_by' in data:
                 from signals.apps.signals.models import Signal
                 locked_signal.finished_by = data['finished_by']
