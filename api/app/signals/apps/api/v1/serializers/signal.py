@@ -349,6 +349,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
 
         country_data = validated_data.pop('country', None)
         city_data = validated_data.pop('city', None)
+        city_object_data = validated_data.pop('city_object', None)
 
         signal = Signal.actions.create_initial(
             validated_data,
@@ -358,6 +359,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             reporter_data,
             country_data,
             city_data,
+            city_object_data,
             priority_data,
             type_data
         )
@@ -371,6 +373,10 @@ class PublicSignalSerializerDetail(HALSerializer):
     _display = serializers.SerializerMethodField(method_name='get__display')
     country = serializers.SerializerMethodField(required=False)
     city = serializers.SerializerMethodField(required=False)
+    city_object = CityObjectSerializer(
+        many=True,
+        required=False
+    )
 
     class Meta:
         model = Signal
@@ -385,7 +391,8 @@ class PublicSignalSerializerDetail(HALSerializer):
             'incident_date_end',
             'finished_by',
             'country',
-            'city'
+            'city',
+            'city_object',
         )
 
     def get__display(self, obj):
@@ -423,6 +430,10 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
 
     country = CountrySerializer(required=False)
     city = CitySerializer(required=False)
+    city_object = CityObjectSerializer(
+        many=True,
+        required=False
+    )
 
     extra_properties = SignalExtraPropertiesField(
         required=False,
@@ -450,7 +461,8 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
             'incident_date_end',
             'extra_properties',
             'country',
-            'city'
+            'city',
+            'city_object'
         )
 
     def validate(self, data):
@@ -471,10 +483,11 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         category_assignment_data = validated_data.pop('category_assignment')
         country_data = validated_data.pop('country', None)
         city_data = validated_data.pop('city', None)
+        city_object_data = validated_data.pop('city_object', None)
 
         status_data = {"state": workflow.GEMELD}
         signal = Signal.actions._create_initial_no_transaction(
-            validated_data, location_data, status_data, category_assignment_data, reporter_data, country_data, city_data)
+            validated_data, location_data, status_data, category_assignment_data, reporter_data, country_data, city_data, city_object_data)
         return signal
 
 

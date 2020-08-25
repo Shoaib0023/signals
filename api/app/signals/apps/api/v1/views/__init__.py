@@ -23,6 +23,7 @@ from signals.apps.api.v1.views.status_message_template import StatusMessageTempl
 from signals.apps.api.v1.views.stored_signal_filter import StoredSignalFilterViewSet
 
 from signals.apps.api.v1.views.city_object import CityObjectViewSet
+from signals.apps.api.v1.views.signal_city_object import SignalCityObjectViewSet
 
 __all__ = (
     'PublicSignalAttachmentsViewSet',
@@ -43,5 +44,6 @@ __all__ = (
     'StoredSignalFilterViewSet',
     'PublicAreasViewSet',
     'PrivateAreasViewSet',
-    'CityObjectViewSet'
+    'CityObjectViewSet',
+    'SignalCityObjectViewSet'
 )
