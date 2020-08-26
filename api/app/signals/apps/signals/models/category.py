@@ -67,7 +67,7 @@ class Category(models.Model):
 
     parent = models.ForeignKey('signals.Category',
                                related_name='children',
-                               on_delete=models.PROTECT,
+                               on_delete=models.SET_NULL,
                                null=True, blank=True)
 
     # SIG-1135, the slug is auto populated using the django-extensions "AutoSlugField"
@@ -79,7 +79,7 @@ class Category(models.Model):
     category_level_name2 = models.CharField(max_length=255, null=True, blank=True)
     category_level_name3 = models.CharField(max_length=255, null=True, blank=True)
     category_level_name4 = models.CharField(max_length=255, null=True, blank=True)
-    
+
     country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
 
