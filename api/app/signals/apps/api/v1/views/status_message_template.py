@@ -20,11 +20,17 @@ class StatusMessageTemplatesViewSet(mixins.RetrieveModelMixin, mixins.CreateMode
     queryset = StatusMessageTemplate.objects.none()
 
     def get_object(self):
-        if 'slug' in self.kwargs and 'sub_slug' in self.kwargs:
-            kwargs = {'parent__slug': self.kwargs['slug'],
-                      'slug': self.kwargs['sub_slug']}
+        # if 'slug' in self.kwargs and 'sub_slug' in self.kwargs:
+        #     kwargs = {'parent__slug': self.kwargs['slug'],
+        #               'slug': self.kwargs['sub_slug']}
+        # else:
+        #     kwargs = {'slug': self.kwargs['slug']}
+
+        if 'cat4' in self.kwargs:
+            kwargs = {'category_level_name1': self.kwargs["cat1"], 'category_level_name2': self.kwargs["cat2"], 'category_level_name3': self.kwargs["cat3"], 'category_level_name4': self.kwargs["cat4"]}
+
         else:
-            kwargs = {'slug': self.kwargs['slug']}
+            kwargs = {'category_level_name1': self.kwargs["cat1"], 'category_level_name2': self.kwargs["cat2"], 'category_level_name3': self.kwargs["cat3"]}
 
         obj = get_object_or_404(Category.objects.all(), **kwargs)
         self.check_object_permissions(self.request, obj)

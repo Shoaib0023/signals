@@ -14,9 +14,9 @@ class _NestedCategoryModelSerializer(SIAModelSerializer):
     main = serializers.CharField(source='category.parent.name', read_only=True)
     main_slug = serializers.CharField(source='category.parent.slug', read_only=True)
 
-    sub_category = LegacyCategoryHyperlinkedRelatedField(source='category',
-                                                         write_only=True,
-                                                         required=False)
+    # sub_category = LegacyCategoryHyperlinkedRelatedField(source='category',
+    #                                                      write_only=True,
+    #                                                      required=False)
     category_url = CategoryHyperlinkedRelatedField(source='category',
                                                    required=False)
 
@@ -31,7 +31,7 @@ class _NestedCategoryModelSerializer(SIAModelSerializer):
     class Meta:
         model = CategoryAssignment
         fields = (
-            'sub_category',
+            # 'sub_category',
             'sub',
             'sub_slug',
             'main',

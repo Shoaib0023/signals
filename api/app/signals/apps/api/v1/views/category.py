@@ -21,7 +21,33 @@ class ParentCategoryViewSet(DatapuntViewSet):
     queryset = Category.objects.filter(parent__isnull=True)
     serializer_detail_class = ParentCategoryHALSerializer
     serializer_class = ParentCategoryHALSerializer
-    lookup_field = 'slug'
+    # lookup_field = 'slug'
+    lookup_fields = (('category_level_name1'), ('category_level_name2'), ('category_level_name3'), ('category_level_name4'))
+
+
+class CategoryNameViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategoryHALSerializer
+    pagination_class = HALPagination
+
+    def get_object(self):
+        # print(self.kwargs)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        if 'cat4' in self.kwargs:
+            obj = get_object_or_404(queryset,
+                                    category_level_name1=self.kwargs['cat1'],
+                                    category_level_name2=self.kwargs['cat2'],
+                                    category_level_name3=self.kwargs['cat3'],
+                                    category_level_name4=self.kwargs['cat4'])
+        else:
+            obj = get_object_or_404(queryset,
+                                    category_level_name1=self.kwargs['cat1'],
+                                    category_level_name2=self.kwargs['cat2'],
+                                    category_level_name3=self.kwargs['cat3'])
+
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class ChildCategoryViewSet(RetrieveModelMixin, GenericViewSet):

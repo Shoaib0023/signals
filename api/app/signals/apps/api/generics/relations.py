@@ -29,6 +29,10 @@ class ParameterisedHyperlinkedRelatedField(relations.HyperlinkedRelatedField):
                 self.get_queryset().get(parent__slug='X', slug='Y')
         """
         kwargs = {}
+
+        if not 'cat4' in view_args:
+            self.lookup_fields = (('category_level_name1', 'cat1'), ('category_level_name2', 'cat2'), ('category_level_name3', 'cat3'))
+
         for model_field, url_param in self.lookup_fields:
             model_field = model_field.replace('.', '__')
             kwargs[model_field] = view_kwargs[url_param]
@@ -49,6 +53,12 @@ class ParameterisedHyperlinkedRelatedField(relations.HyperlinkedRelatedField):
             For this example the lookup_fields will look like
                 (('parent.slug', 'slug'), ('slug', 'sub_slug'))
         """
+
+        if not obj.category_level_name4:
+            self.lookup_fields = (('category_level_name1', 'cat1'), ('category_level_name2', 'cat2'), ('category_level_name3', 'cat3'))
+        else:
+            self.lookup_fields = (('category_level_name1', 'cat1'), ('category_level_name2', 'cat2'), ('category_level_name3', 'cat3'), ('category_level_name4', 'cat4'))
+
         kwargs = {}
         for model_field, url_param in self.lookup_fields:
             attr = obj

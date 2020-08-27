@@ -9,7 +9,8 @@ from signals.apps.api.v1.views.attachment import (
 from signals.apps.api.v1.views.category import (
     ChildCategoryViewSet,
     ParentCategoryViewSet,
-    PrivateCategoryViewSet
+    PrivateCategoryViewSet,
+    CategoryNameViewSet
 )
 from signals.apps.api.v1.views.category_removed import SignalCategoryRemovedAfterViewSet
 from signals.apps.api.v1.views.departments import PrivateDepartmentViewSet
@@ -45,5 +46,6 @@ __all__ = (
     'PublicAreasViewSet',
     'PrivateAreasViewSet',
     'CityObjectViewSet',
-    'SignalCityObjectViewSet'
+    'SignalCityObjectViewSet',
+    'CategoryNameViewSet'
 )
