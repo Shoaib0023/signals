@@ -18,12 +18,14 @@ class History(models.Model):
     extra = models.CharField(max_length=255, null=True)  # not relevant for every logged model.
     description = models.TextField(max_length=3000)
 
+   
     # No changes to this database view please!
     def save(self, *args, **kwargs):
         raise NotImplementedError
 
     def delete(self, *args, **kwargs):
         raise NotImplementedError
+
 
     def get_action(self):
         """Generate text for the action field that can serve as title in UI."""

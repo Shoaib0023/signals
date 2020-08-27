@@ -13,6 +13,7 @@ class SignalExtraPropertiesField(JSONField):
         self.instance = instance
         return instance.extra_properties
 
+
     def to_representation(self, value):
         representation = super(SignalExtraPropertiesField, self).to_representation(value=value)
         if not settings.FEATURE_FLAGS.get('API_FILTER_EXTRA_PROPERTIES', False):
@@ -20,11 +21,13 @@ class SignalExtraPropertiesField(JSONField):
 
         # SIG-1711: Only show extra properties that belong to the currently assigned category or
         #           the parent of the currently assigned category
-        category = self.instance.category_assignment.category
-        category_urls = [url_from_category(category), ]
-        if category.is_child():
-            category_urls.append(url_from_category(category.parent))
+        if self.instance.category_assignment:
+            category = self.instance.category_assignment.category
+            category_urls = [url_from_category(category), ]
+            if category.is_child():
+                category_urls.append(url_from_category(category.parent))
 
-        return filter(
-            lambda x: 'category_url' in x and x['category_url'] in category_urls, representation
-        )
+            return filter(
+                lambda x: 'category_url' in x and x['category_url'] in category_urls, representation
+            )
+
