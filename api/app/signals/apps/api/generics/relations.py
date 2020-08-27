@@ -30,7 +30,7 @@ class ParameterisedHyperlinkedRelatedField(relations.HyperlinkedRelatedField):
         """
         kwargs = {}
 
-        if if 'cat1' in view_kwargs and 'cat2' in view_kwargs and 'cat3' in view_kwargs and not 'cat4' in view_kwargs:
+        if 'cat1' in view_kwargs and 'cat2' in view_kwargs and 'cat3' in view_kwargs and not 'cat4' in view_kwargs:
             self.lookup_fields = (('category_level_name1', 'cat1'), ('category_level_name2', 'cat2'), ('category_level_name3', 'cat3'))
         else:
             self.lookup_fields = (('category_level_name1', 'cat1'), ('category_level_name2', 'cat2'), ('category_level_name3', 'cat3'), ('category_level_name4', 'cat4'))
