@@ -33,5 +33,11 @@ def url_from_category(category, request=None):
     if category.is_child():
         kwargs = {'slug': category.parent.slug, 'sub_slug': category.slug}
     else:
-        kwargs = {'slug': category.slug}
+        # kwargs = {'slug': category.slug}
+        if category.category_level_name4:
+            kwargs = {'category_level_name1': category.category_level_name1, 'category_level_name2':category.category_level_name2, 'category_level_name3':category.category_level_name3, 'category_level_name4': category.category_level_name4}
+
+        else:
+            kwargs = {'category_level_name1': category.category_level_name1, 'category_level_name2':category.category_level_name2, 'category_level_name3':category.category_level_name3}
+
     return reverse('v1:category-detail', kwargs=kwargs, request=request)
