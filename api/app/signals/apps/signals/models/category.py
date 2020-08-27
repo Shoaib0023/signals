@@ -116,10 +116,15 @@ class Category(models.Model):
 
     def __str__(self):
         """String representation."""
-        return '{name}{parent}'.format(name=self.name,
-                                       parent=" ({})".format(
-                                           self.parent.name) if self.parent else ""
-                                       )
+        # return '{name}{parent}'.format(name=self.name, parent=" ({})".format(self.parent.name) if self.parent else "")
+        if self.category_level_name4:
+            return '{} - {} - {} - {}'.format(self.category_level_name1, self.category_level_name2, self.category_level_name3, self.category_level_name4)
+
+        elif self.category_level_name3:
+            return '{} - {} - {}'.format(self.category_level_name1, self.category_level_name2, self.category_level_name3)
+
+        else:
+            return name
 
     def is_parent(self):
         return self.children.exists()
