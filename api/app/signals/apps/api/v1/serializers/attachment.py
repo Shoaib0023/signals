@@ -23,6 +23,7 @@ class SignalAttachmentSerializer(HALSerializer):
             'is_image',
             'created_at',
             'file',
+            'is_issue_finish_image',
         )
 
         read_only = (
@@ -33,11 +34,12 @@ class SignalAttachmentSerializer(HALSerializer):
             'created_at',
         )
 
-        extra_kwargs = {'file': {'write_only': True}}
+        extra_kwargs = {'file': {'write_only': True}, 'is_issue_finish_image': {'required': False}}
 
     def create(self, validated_data):
+        is_issue_finish_image = validated_data['is_issue_finish_image'] if 'is_issue_finish_image' in validated_data else False
         attachment = Signal.actions.add_attachment(validated_data['file'],
-                                                   self.context['view'].get_object())
+                                                   self.context['view'].get_object(), issue_finish=is_issue_finish_image)
 
         if self.context['request'].user:
             attachment.created_by = self.context['request'].user.email
