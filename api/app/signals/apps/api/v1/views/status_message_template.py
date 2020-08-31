@@ -20,19 +20,23 @@ class StatusMessageTemplatesViewSet(mixins.RetrieveModelMixin, mixins.CreateMode
     queryset = StatusMessageTemplate.objects.none()
 
     def get_object(self):
-        # if 'slug' in self.kwargs and 'sub_slug' in self.kwargs:
-        #     kwargs = {'parent__slug': self.kwargs['slug'],
-        #               'slug': self.kwargs['sub_slug']}
-        # else:
-        #     kwargs = {'slug': self.kwargs['slug']}
-
         if 'cat4' in self.kwargs:
             kwargs = {'category_level_name1': self.kwargs["cat1"], 'category_level_name2': self.kwargs["cat2"], 'category_level_name3': self.kwargs["cat3"], 'category_level_name4': self.kwargs["cat4"]}
 
-        else:
+        elif 'cat3' in self.kwargs:
             kwargs = {'category_level_name1': self.kwargs["cat1"], 'category_level_name2': self.kwargs["cat2"], 'category_level_name3': self.kwargs["cat3"]}
 
-        obj = get_object_or_404(Category.objects.all(), **kwargs)
+        elif 'cat2' in self.kwargs:
+            kwargs = {'category_level_name1': self.kwargs["cat1"], 'category_level_name2': self.kwargs["cat2"]}
+
+        else:
+            kwargs = {'category_level_name1': self.kwargs["cat1"]}
+
+        if self.request.method == "POST":
+            obj = Category.objects.get(**kwargs)
+        else:
+            obj = Category.objects.filter(**kwargs)
+
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -42,9 +46,20 @@ class StatusMessageTemplatesViewSet(mixins.RetrieveModelMixin, mixins.CreateMode
         return context
 
     def retrieve(self, request, *args, **kwargs):
-        status_message_templates = self.get_object().status_message_templates.all()
-        serializer = self.get_serializer(status_message_templates, many=True)
-        return Response(serializer.data)
+        if request.method == "POST":
+            status_message_templates = self.get_object().status_message_templates.all()
+            serializer = self.get_serializer(status_message_templates, many=True)
+            return Response(serializer.data)
+
+        else:
+            status_message_templates = [category.status_message_templates.all() for category in self.get_object()]
+            result = []
+            for category in self.get_object():
+                status_message_templates = category.status_message_templates.all()
+                serializer = self.get_serializer(status_message_templates, many=True)
+                result.extend(serializer.data)
+
+            return Response(result)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=True)
