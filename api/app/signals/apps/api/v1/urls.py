@@ -88,13 +88,14 @@ urlpatterns = [
         # Returns the details of the currently logged in user
         path('me/', UserViewSet.as_view({'get': 'me'}), name='auth-me'),
 
-        # Get/Replace the status message templates per category
-        # path('terms/categories/<str:slug>/status-message-templates',
-        #      StatusMessageTemplatesViewSet.as_view({'get': 'retrieve', 'post': 'create'}),
-        #      name='private-status-message-templates-parent'),
-        # path('terms/categories/<str:slug>/sub_categories/<str:sub_slug>/status-message-templates',
-        #      StatusMessageTemplatesViewSet.as_view({'get': 'retrieve', 'post': 'create'}),
-        #      name='private-status-message-templates-child'),
+        path('terms/categories/<str:cat1>/status-message-templates',
+             StatusMessageTemplatesViewSet.as_view({'get': 'retrieve', 'post': 'create'}),
+             name='private-status-message-templates-parent'),
+
+        path('terms/categories/<str:cat1>/<str:cat2>/status-message-templates',
+             StatusMessageTemplatesViewSet.as_view({'get': 'retrieve', 'post': 'create'}),
+             name='private-status-message-templates-parent'),
+
         path('terms/categories/<str:cat1>/<str:cat2>/<str:cat3>/status-message-templates',
              StatusMessageTemplatesViewSet.as_view({'get': 'retrieve', 'post': 'create'}),
              name='private-status-message-templates-parent'),
