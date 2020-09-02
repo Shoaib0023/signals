@@ -67,7 +67,7 @@ def department_choices():
 
 class SignalFilter(FilterSet):
     id = filters.NumberFilter()
-    
+
     country = filters.MultipleChoiceFilter(field_name='country')
     city = filters.MultipleChoiceFilter(field_name='city')
 
@@ -91,6 +91,12 @@ class SignalFilter(FilterSet):
         queryset=_get_child_category_queryset(),
         to_field_name='slug',
         field_name='category_assignment__category__slug',
+    )
+
+    category_filter_label = filters.ModelMultipleChoiceFilter(
+        queryset=_get_parent_category_queryset(),
+        to_field_name='filter_label',
+        field_name='category_assignment__category__filter_label',
     )
 
     priority = filters.MultipleChoiceFilter(field_name='priority__priority',
