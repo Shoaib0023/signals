@@ -103,7 +103,7 @@ def connect():
 def connectRabbitMQ(data={}):
     # print("RabbitMq called : ", data)
     credentials = pika.PlainCredentials('signals', 'insecure')
-    parameters = pika.ConnectionParameters('localhost', 5672, 'vhost', credentials)
+    parameters = pika.ConnectionParameters('ec2-52-200-189-81.compute-1.amazonaws.com', 5672, 'vhost', credentials)
 
     connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
@@ -115,10 +115,10 @@ def connectRabbitMQ(data={}):
     connection.close()
 
 
-# connect()
+connect()
 print("  [*] Waiting for new signals. To exit press CTRL+C")
-schedule.every(1).minutes.do(connect)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+#schedule.every(1).minutes.do(connect)
+#while True:
+#    schedule.run_pending()
+#    time.sleep(1)
 

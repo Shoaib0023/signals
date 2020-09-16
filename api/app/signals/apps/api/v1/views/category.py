@@ -36,15 +36,15 @@ class CategoryNameViewSet(RetrieveModelMixin, GenericViewSet):
 
         if 'cat4' in self.kwargs:
             obj = get_object_or_404(queryset,
-                                    category_level_name1=self.kwargs['cat1'],
-                                    category_level_name2=self.kwargs['cat2'],
-                                    category_level_name3=self.kwargs['cat3'],
-                                    category_level_name4=self.kwargs['cat4'])
+                                    category_level_name1__iexact=self.kwargs['cat1'],
+                                    category_level_name2__iexact=self.kwargs['cat2'],
+                                    category_level_name3__iexact=self.kwargs['cat3'],
+                                    category_level_name4__iexact=self.kwargs['cat4'])
         else:
             obj = get_object_or_404(queryset,
-                                    category_level_name1=self.kwargs['cat1'],
-                                    category_level_name2=self.kwargs['cat2'],
-                                    category_level_name3=self.kwargs['cat3'])
+                                    category_level_name1__iexact=self.kwargs['cat1'],
+                                    category_level_name2__iexact=self.kwargs['cat2'],
+                                    category_level_name3__iexact=self.kwargs['cat3'])
 
         self.check_object_permissions(self.request, obj)
         return obj

@@ -4,7 +4,7 @@ import requests
 import json
 
 credentials = pika.PlainCredentials('signals', 'insecure')
-parameters = pika.ConnectionParameters('localhost',
+parameters = pika.ConnectionParameters('ec2-52-200-189-81.compute-1.amazonaws.com',
                                        5672,
                                        'vhost',
                                        credentials)
