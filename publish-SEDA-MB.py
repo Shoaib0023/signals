@@ -7,19 +7,11 @@ from urllib.request import urlopen
 import schedule
 import time
 import datetime
-from decouple import config
 import os
+import base64
+import requests
 
-#export('last_excecuted_datetime', 3)
-#os.getenv['last_executed_datetime'] = '3'
-#print(os.getenv('sample-env'))
-#os.setenv('sample-env', 'sample')
-
-# if 'LAST_TIME_EXECUTED' not in os.environ:
-#     os.environ['LAST_TIME_EXECUTED'] = datetime.datetime(2020, 9, 11, 0, 0, tzinfo=datetime.timezone.utc)
-# else:
-#     LAST_TIME_EXECUTED = os.environ.get('LAST_TIME_EXECUTED')
-last_executed_datetime = datetime.datetime(2020, 9, 11, 10, 7, 35, 428078, tzinfo=datetime.timezone.utc)
+last_executed_datetime = datetime.datetime(2020, 9, 17, 8, 15, 3, 358496, tzinfo=datetime.timezone.utc)
 
 def connect():
     try:
@@ -37,8 +29,7 @@ def connect():
         signals = cursor.fetchall()
         last_executed_datetime = current - datetime.timedelta(microseconds=1)
         for signal in signals:
-            print(signal)
-            # return
+            # print(signal)
             # ? Fetching a Category from PostgreSQL
             categoryassignment_id = signal.category_assignment_id
             postgreSQL_select_Query = f"Select * from signals_categoryassignment where id={categoryassignment_id}"
@@ -61,32 +52,28 @@ def connect():
             # print(location.address_text)
 
             # ? Fetching image from PostgreSQL
-            location_id = signal.location_id
             postgreSQL_select_Query = f"Select * from signals_attachment where _signal_id={signal.id}"
             cursor.execute(postgreSQL_select_Query)
-            image = cursor.fetchone()
-            # print(images)
-            # if image:
-            #     image_url = f"http://localhost:8000/signals/media/{image.file}"
-            #     image_file = urlopen(image_url).read()
-            #     # print(image_file)
-
-            # else:
-            #     image_file = ''
+            attachment = cursor.fetchone()
+            if attachment and attachment.file:
+                url = 'http://ec2-52-200-189-81.compute-1.amazonaws.com:8000/signals/media/' + attachment.file
+            else:
+                url = ' '
 
             # ? Constructing data format needed for MB to create Signal
-            signal_data["description"] = signal.text
-            signal_data["category"] = category.category_level_name1
-            signal_data["sub_category"] = category.category_level_name2
-            signal_data["sub_category1"] = category.category_level_name3
-            signal_data["sub_category2"] = category.category_level_name4
-            # signal_data["user_id"] = signal.text
+            signal_data["image_url"] = url
             signal_data["address"] = location.address_text
-            signal_data["is_edit"] = "true"
-            signal_data["locations"] = coordinates
-            signal_data["report_type"] = "SEDA"
-            signal_data["language"] = "1"
-            signal_data["issue_image"] = ''
+            signal_data["category"] = "Afval"
+            signal_data["sub_category"] = ""
+            signal_data["sub_category1"] = ""
+            signal_data["sub_category2"] = ""
+            signal_data["category_id"] = "5d8f1da6decf62a41c00002d"
+            signal_data["description"] = signal.text
+            signal_data["sub_category_id"] = ""
+            signal_data["sub_category1_id"] = ""
+            signal_data["sub_category2_id"] = ""
+            signal_data["location"] = ["", ""]
+            signal_data["user_id"] = "5dacb94417a8dc7e657b23c7"
 
             connectRabbitMQ(data)
 
@@ -98,17 +85,16 @@ def connect():
         if(connection):
             cursor.close()
             connection.close()
-            # print("PostgreSQL connection is closed")
 
     print("---------------------------------------------------")
     print("  [*] Waiting for new signals. To exit press CTRL+C")
     return
 
 # Function to publish data to rabbitmq
-def connectRabbitMQ(data={}):
-    # print("RabbitMq called : ", data)
+def connectRabbitMQ(data):
+    print("Data Published : ", data)
     credentials = pika.PlainCredentials('signals', 'insecure')
-    parameters = pika.ConnectionParameters('ec2-52-200-189-81.compute-1.amazonaws.com', 5672, 'vhost', credentials)
+    parameters = pika.ConnectionParameters('localhost', 5672, 'vhost', credentials)
 
     connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
@@ -119,11 +105,10 @@ def connectRabbitMQ(data={}):
     print("Data is successfully published to the queue !!")
     connection.close()
 
-
-connect()
+# connect()
 print("  [*] Waiting for new signals. To exit press CTRL+C")
-#schedule.every(1).minutes.do(connect)
-#while True:
-#    schedule.run_pending()
-#    time.sleep(1)
+schedule.every(2).minutes.do(connect)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 

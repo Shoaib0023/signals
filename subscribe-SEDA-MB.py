@@ -2,9 +2,10 @@
 import pika
 import requests
 import json
+import base64
 
 credentials = pika.PlainCredentials('signals', 'insecure')
-parameters = pika.ConnectionParameters('ec2-52-200-189-81.compute-1.amazonaws.com',
+parameters = pika.ConnectionParameters('localhost',
                                        5672,
                                        'vhost',
                                        credentials)
@@ -18,15 +19,18 @@ def callback(ch, method, properties, body):
         "email" : "prashant.shukla.in@gmail.com",
         "password": "123456",
     }
-    return 
 
-    headers = {"Authorization": user_credentials["token"]}
     data = json.loads(body)['signals']
-    files = json.loads(body)['signals'].pop('issue_image')
+    url = data.pop('image_url')
+    # print(url)
+    # url = 'http://localhost:8000/signals/media/attachments/2020/09/16/test.png'
+    if url:
+        response = requests.get(url)
+        uri = ("data:" + response.headers['Content-Type'] + ";" + "base64," + str(base64.b64encode(response.content).decode("utf-8")))
+        data["issue_image"] = [uri]
 
-    response = requests.post("https://admin.haagsebeheerder.nl/index.php/api/submit_report/", data=data, headers=headers)
+    response = requests.post("https://admin.haagsebeheerder.nl/index.php/api/submit_mor", json=data)
     print(response.status_code)
-    print(response.json())
     print("\n")
 
 

@@ -76,6 +76,8 @@ class Status(CreatedUpdatedModel):
 
         new_state = self.state
         new_state_display = self.get_state_display()
+        print(current_state, current_state_display)
+        print(new_state, new_state_display)
 
         # Validating state transition.
         if new_state not in workflow.ALLOWED_STATUS_CHANGES[current_state]:

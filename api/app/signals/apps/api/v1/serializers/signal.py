@@ -424,6 +424,9 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
     Note: this is only used in the creation of new Signal instances, not to
     create the response body after a succesfull POST.
     """
+    status = _NestedStatusModelSerializer(
+        required=False,
+    )
     location = _NestedLocationModelSerializer()
     reporter = _NestedReporterModelSerializer()
     category = _NestedCategoryModelSerializer(source='category_assignment')
@@ -459,6 +462,8 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
             'reporter',
             'incident_date_start',
             'incident_date_end',
+            'status',
+            'source',
             'extra_properties',
             'country',
             'city',
@@ -484,8 +489,9 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         country_data = validated_data.pop('country', None)
         city_data = validated_data.pop('city', None)
         city_object_data = validated_data.pop('city_object', None)
-
-        status_data = {"state": workflow.GEMELD}
+        status_data = validated_data.pop('status', None)
+        if not status_data:
+            status_data = {"state": workflow.GEMELD}
         signal = Signal.actions._create_initial_no_transaction(
             validated_data, location_data, status_data, category_assignment_data, reporter_data, country_data, city_data, city_object_data)
         return signal

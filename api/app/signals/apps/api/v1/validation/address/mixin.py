@@ -48,8 +48,8 @@ class AddressValidationMixin:
 
         if 'address' in location_data and location_data["address"]:
             try:
-                address_validation = self.get_address_validation()
-                validated_address = address_validation.validate_address(location_data["address"], lon, lat)
+                # address_validation = self.get_address_validation()
+                # validated_address = address_validation.validate_address(location_data["address"], lon, lat)
 
                 # Set suggested address from AddressValidation as address and save original address
                 # in extra_properties, to correct possible spelling mistakes in original address.
@@ -57,7 +57,8 @@ class AddressValidationMixin:
                     location_data["extra_properties"] = {}
 
                 location_data["extra_properties"]["original_address"] = location_data["address"]
-                location_data["address"] = validated_address
+                #location_data["address"] = validated_address
+                location_data["address"] = location_data["address"]
                 location_data["bag_validated"] = True
             except AddressValidationUnavailableException:
                 # Ignore it when the address validation is unavailable. Just save the unvalidated
