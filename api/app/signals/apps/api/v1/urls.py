@@ -27,6 +27,8 @@ from signals.apps.feedback.views import FeedbackViewSet, StandardAnswerViewSet
 from signals.apps.search.views import SearchView
 from signals.apps.users.v1.views import PermissionViewSet, RoleViewSet, UserViewSet
 from signals.apps.api.v1.views.signals_plan import PrivateSignalsPlanViewset
+from signals.apps.api.v1.views.id_mapping import IDMappingViewset
+
 
 # Public API
 public_router = SignalsRouterVersion1()
@@ -79,6 +81,7 @@ urlpatterns = [
         path('questions/',
              PublicQuestionViewSet.as_view({'get': 'list'}),
              name='question-detail'),
+        path('idmapping/', IDMappingViewset.as_view({'get': 'list', 'post':'create'}), name="id-mapping"),
         # V1 disabled for now
         # path('category/prediction', MLPredictCategoryView.as_view({'get': 'retrieve'}), name='ml-predict-category'),
     ])),

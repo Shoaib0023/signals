@@ -37,6 +37,8 @@ from signals.apps.api.v1.serializers.country import CountrySerializer
 from signals.apps.api.v1.serializers.city import CitySerializer
 from signals.apps.api.v1.serializers.city_object import CityObjectSerializer
 from signals.apps.api.v1.serializers.signal_city_object import SignalCityObjectSerializerList, SignalCityObjectSerializerDetail
+from signals.apps.api.v1.serializers.id_mapping import IDMappingSerializer
+
 
 __all__ = [
     'PublicSignalAttachmentSerializer',
@@ -64,5 +66,6 @@ __all__ = [
     'CitySerializer',
     'CityObjectSerializer',
     'SignalCityObjectSerializerList',
-    'SignalCityObjectSerializerDetail'
+    'SignalCityObjectSerializerDetail',
+    'IDMappingSerializer'
 ]
