@@ -5,13 +5,16 @@ import json
 import base64
 
 credentials = pika.PlainCredentials('signals', 'insecure')
-parameters = pika.ConnectionParameters('localhost',
+parameters = pika.ConnectionParameters('ec2-52-200-189-81.compute-1.amazonaws.com',
                                        5672,
                                        'vhost',
                                        credentials)
 
 
 def callback(ch, method, properties, body):
+    print("Called ......")
+    return 
+
     # print(" [x] Received %r" % json.loads(body))
     print("Creating a signal in MB ....")
     user_credentials = {

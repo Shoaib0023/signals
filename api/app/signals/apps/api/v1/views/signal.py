@@ -47,6 +47,15 @@ class PublicSignalViewSet(PublicSignalGenericViewSet):
         data = PublicSignalSerializerDetail(signal, context=self.get_serializer_context()).data
         return Response(data)
 
+    def update(self, request, signal_id):
+        # print("View : ", request.method, signal_id)
+        instance = Signal.objects.get(signal_id=signal_id)
+        # print(request.data)
+        serializer = PublicSignalSerializerDetail(instance, data=request.data, context=self.get_serializer_context())
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 
 class PrivateSignalViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, DatapuntViewSet):
     """Viewset for `Signal` objects in V1 private API"""

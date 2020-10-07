@@ -1,5 +1,11 @@
 from django.contrib.gis.db import models
 
+APPS = [
+    ('MB', 'Mobile-Beherdeer'),
+    ('FC', 'Facilitator'),
+    ('MCC', 'MyCleanCity'),
+    ('SEDA', 'SEDA') 
+]
 
 class Department(models.Model):
     # TODO: consider adding uniqueness constraint to code and name
@@ -9,6 +15,7 @@ class Department(models.Model):
 
     country = models.ForeignKey('signals.Country', on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey('signals.City', on_delete=models.SET_NULL, null=True)
+    app = models.CharField(max_length=255, choices=APPS, default='SEDA')
 
     class Meta:
         permissions = (

@@ -630,6 +630,46 @@ class SignalManager(models.Manager):
                 locked_signal.finished_by = data['finished_by']
                 locked_signal.save()
 
+            if 'text' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.text = data['text']
+                locked_signal.save()
+
+            if 'webform_kenmark' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.webform_kenmark = data['webform_kenmark']
+                locked_signal.save()
+
+            if 'mb_report_id' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.mb_report_id = data['mb_report_id']
+                locked_signal.save()
+
+            if 'facilitator_report_id' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.facilitator_report_id = data['facilitator_report_id']
+                locked_signal.save()
+
+            if 'report_days' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.report_days = data['report_days']
+                locked_signal.save()
+
+            if 'forman_emp_name' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.forman_emp_name = data['forman_emp_name']
+                locked_signal.save()
+
+            if 'urgency' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.urgency = data['urgency']
+                locked_signal.save()
+
+            if 'plan_time' in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.plan_time = data['plan_time']
+                locked_signal.save()
+ 
             # Send out all Django signals:
             transaction.on_commit(lambda: send_signals(to_send))
 

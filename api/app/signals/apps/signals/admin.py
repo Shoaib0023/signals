@@ -16,11 +16,13 @@ from signals.apps.signals.models import (
     StatusMessageTemplate,
     CityObject,
     History,
+    Attachment,
 )
 from signals.apps.signals.models.category_translation import CategoryTranslation
 
 admin.site.register(CityObject)
 admin.site.register(History)
+admin.site.register(Attachment)
 
 class CategoryQuestionInline(admin.StackedInline):
     raw_id_fields = ('category', 'question',)
@@ -79,7 +81,7 @@ class CategoryDepartmentInline(admin.TabularInline):
 
 class DepartmentAdmin(admin.ModelAdmin):
     inlines = (CategoryDepartmentInline, )
-    fields = ('code', 'name', 'is_intern')
+    fields = ('code', 'name', 'is_intern', 'app')
     list_display = ('code', 'name', 'is_intern')
     ordering = ('name',)
     list_per_page = 20

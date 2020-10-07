@@ -73,9 +73,12 @@ class Attachment(CreatedUpdatedModel):
     def save(self, *args, **kwargs):
         if self.pk is None:
             # Check if file is image
+            print(imghdr.what(self.file))
             self.is_image = imghdr.what(self.file) is not None
 
+            print(self.mimetype)
             if not self.mimetype and hasattr(self.file.file, 'content_type'):
                 self.mimetype = self.file.file.content_type
+                print(self.mimetype)
 
         super().save(*args, **kwargs)
