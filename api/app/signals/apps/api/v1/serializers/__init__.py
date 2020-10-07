@@ -38,6 +38,7 @@ from signals.apps.api.v1.serializers.city import CitySerializer
 from signals.apps.api.v1.serializers.city_object import CityObjectSerializer
 from signals.apps.api.v1.serializers.signal_city_object import SignalCityObjectSerializerList, SignalCityObjectSerializerDetail
 from signals.apps.api.v1.serializers.id_mapping import IDMappingSerializer
+from signals.apps.api.v1.serializers.signal_plan_update import SignalPlanUpdateSerializer
 
 
 __all__ = [
@@ -67,5 +68,6 @@ __all__ = [
     'CityObjectSerializer',
     'SignalCityObjectSerializerList',
     'SignalCityObjectSerializerDetail',
-    'IDMappingSerializer'
+    'IDMappingSerializer',
+    'SignalPlanUpdateSerializer',
 ]

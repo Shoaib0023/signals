@@ -26,6 +26,8 @@ from signals.apps.api.v1.views.stored_signal_filter import StoredSignalFilterVie
 from signals.apps.api.v1.views.city_object import CityObjectViewSet
 from signals.apps.api.v1.views.signal_city_object import SignalCityObjectViewSet
 from signals.apps.api.v1.views.id_mapping import IDMappingViewset
+from signals.apps.api.v1.views.signal_plan_update import SignalPlanUpdateViewSet
+
 
 __all__ = (
     'PublicSignalAttachmentsViewSet',
@@ -50,4 +52,5 @@ __all__ = (
     'SignalCityObjectViewSet',
     'CategoryNameViewSet',
     'IDMappingViewset',
+    'SignalPlanUpdateViewSet',
 )

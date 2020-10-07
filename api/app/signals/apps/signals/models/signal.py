@@ -24,14 +24,19 @@ class Signal(CreatedUpdatedModel):
     city_object = models.ManyToManyField('signals.CityObject', through='signals.CityObjectAssignment', blank=True)
     schedule_datetime = models.DateTimeField(null=True, blank=True)
     #id_mapping = models.OneToOneField('signals.IDMapping', related_name="mapping", null=True, on_delete=models.SET_NULL)
+    
     webform_kenmark = models.CharField(max_length=20, null=True, blank=True)
     mb_report_id = models.CharField(max_length=255, null=True, blank=True)
     facilitator_report_id = models.CharField(max_length=255, null=True, blank=True)
+
     # report plan fields 
     report_days = models.CharField(max_length=255, null=True, blank=True)
     urgency = models.CharField(max_length=255, null=True, blank=True)
     forman_emp_name = models.CharField(max_length=255, null=True, blank=True)
     plan_time = models.CharField(max_length=255, null=True, blank=True)
+
+    # report plan updates many to many relationship
+    updates = models.ManyToManyField('signals.SignalPlanUpdate', blank=True)
 
     # we need an unique id for external systems.
     # TODO SIG-563 rename `signal_id` to `signal_uuid` to be more specific.
