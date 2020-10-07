@@ -41,6 +41,7 @@ from signals.apps.api.v1.serializers.country import CountrySerializer
 from signals.apps.api.v1.serializers.city import CitySerializer
 from signals.apps.api.v1.serializers.city_object import CityObjectSerializer
 from signals.apps.api.v1.serializers.id_mapping import IDMappingSerializer
+from signals.apps.api.v1.serializers.signal_plan_update import SignalPlanUpdateSerializer
 
 from signals.apps.signals.models.country import Country
 from signals.apps.signals.models.city import City
@@ -115,6 +116,11 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
         permission_classes=(SIAPermissions,),
     )
 
+    updates = SignalPlanUpdateSerializer(
+        many=True, 
+        required=False
+    )
+
     has_attachments = serializers.SerializerMethodField()
 
     extra_properties = SignalExtraPropertiesField(
@@ -160,6 +166,7 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
             'forman_emp_name',
             'urgency',
             'plan_time',
+            'updates',
         )
         read_only_fields = (
             'id',
@@ -261,6 +268,11 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
         source='type_assignment',
     )
 
+    updates = SignalPlanUpdateSerializer(
+        many=True, 
+        required=False
+    )
+
     directing_departments = _NestedDepartmentModelSerializer(
         source='directing_departments_assignment.departments',
         many=True,
@@ -317,6 +329,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             'forman_emp_name',
             'urgency',
             'plan_time',
+            'updates',
         )
         read_only_fields = (
             'created_at',
@@ -404,6 +417,11 @@ class PublicSignalSerializerDetail(HALSerializer):
         required=False,
     )
 
+    updates = SignalPlanUpdateSerializer(
+        many=True, 
+        required=False
+    )
+
     incident_date_start = serializers.DateTimeField(required=False)
     #id_mapping = IDMappingSerializer(required=False)
     text = serializers.CharField(required=False)
@@ -434,6 +452,7 @@ class PublicSignalSerializerDetail(HALSerializer):
             'forman_emp_name',
             'urgency',
             'plan_time',
+            'updates',
         )
 
     def get__display(self, obj):
@@ -506,6 +525,11 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    updates = SignalPlanUpdateSerializer(
+        many=True, 
+        required=False
+    )
+
     extra_properties = SignalExtraPropertiesField(
         required=False,
         allow_null=True,
@@ -545,6 +569,7 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
             'forman_emp_name',
             'urgency',
             'plan_time',
+            'updates',
         )
 
     def validate(self, data):
