@@ -58,6 +58,7 @@ class PublicSignalViewSet(PublicSignalGenericViewSet):
 
 
 class PrivateSignalViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, DatapuntViewSet):
+    print('private signal viewset function called')
     """Viewset for `Signal` objects in V1 private API"""
     queryset = Signal.objects.select_related(
         'location',
