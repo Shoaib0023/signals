@@ -14,6 +14,7 @@ def _create_message(template_name, context={}):
 
 
 def send_mail_reporter_created(signal):
+    print('email function called for report create')
     if not signal.reporter.email:
         return None
 
