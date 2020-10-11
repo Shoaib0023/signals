@@ -20,7 +20,7 @@ DEBUG = False
 
 # localhost and 127.0.0.1 are allowed because the deployment process checks the health endpoint with a
 # request to localhost:port
-DEFAULT_ALLOWED_HOSTS = 'api.data.amsterdam.nl,acc.api.data.amsterdam.nl,localhost,15.207.50.40,127.0.0.1,ec2-15-207-50-40.ap-south-1.compute.amazonaws.com,ec2-52-200-189-81.compute-1.amazonaws.com'
+DEFAULT_ALLOWED_HOSTS = 'api.data.amsterdam.nl,acc.api.data.amsterdam.nl,localhost,15.207.50.40,127.0.0.1,ec2-15-207-50-40.ap-south-1.compute.amazonaws.com,ec2-52-200-189-81.compute-1.amazonaws.com,52.200.189.81'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', DEFAULT_ALLOWED_HOSTS).split(',')
 #ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ('127.0.0.1', '0.0.0.0')
