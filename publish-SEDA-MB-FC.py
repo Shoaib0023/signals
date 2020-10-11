@@ -92,6 +92,9 @@ def publish():
 
 
             elif department.app == "FC":
+                signal_data["userId"] = "5f7f2acb00456a103b7b23d3"
+                signal_data["districtId"] = "5c4bed08798064a42b000029"
+                signal_data["neighbourhoodId"] = "5c4c32ad798064601500002d"
                 signal_data["sedaId"] = signal.signal_id
                 signal_data["source"] = "Seda"
                 signal_data["team_id"] = 0
@@ -147,7 +150,7 @@ def connect_rabbitmq_FC(data):
         connection = pika.BlockingConnection(parameters)
         channel = connection.channel()
         channel.queue_declare(queue='SEDA-FC', durable=True)
-        channel.basic_publish(exchange='SEDA-FC-exchange', routing_key='hello', body=json.dumps(data, indent=4, sort_keys=True, default=str))
+        channel.basic_publish(exchange='SEDA-FC-exchange', routing_key='insecure', body=json.dumps(data, indent=4, sort_keys=True, default=str))
 
         print("Data is successfully published to FC queue !!")
         connection.close()

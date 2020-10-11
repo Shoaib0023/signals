@@ -159,7 +159,7 @@ class Signal(CreatedUpdatedModel):
 
         :returns: str
         """
-        return 'SIA-{id}'.format(id=self.id)
+        return 'SEDA-{id}'.format(id=self.id)
 
     def get_fqdn_image_crop_url(self):
         """Get FQDN image crop url.

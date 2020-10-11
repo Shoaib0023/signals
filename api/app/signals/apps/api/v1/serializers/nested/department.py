@@ -18,10 +18,12 @@ class _NestedDepartmentModelSerializer(SIAModelSerializer):
             'code',
             'name',
             'is_intern',
+            'app',
         )
         read_only_fields = (
             'id',
             'code',
             'name',
             'is_intern',
+            'app',
         )

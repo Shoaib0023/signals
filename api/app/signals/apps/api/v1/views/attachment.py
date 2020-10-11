@@ -15,10 +15,19 @@ from signals.apps.api.v1.serializers import (
 from signals.apps.api.v1.views._base import PublicSignalGenericViewSet
 from signals.apps.signals.models import Attachment, Signal
 from signals.auth.backend import JWTAuthBackend
+from rest_framework.response import Response
+from rest_framework import status
+from signals.apps.api.v1.serializers.nested import _NestedAttachmentModelSerializer
 
 
-class PublicSignalAttachmentsViewSet(CreateModelMixin, PublicSignalGenericViewSet):
+class PublicSignalAttachmentsViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, PublicSignalGenericViewSet):
     serializer_class = PublicSignalAttachmentSerializer
+
+    def list(self, request, signal_id):
+        signal = Signal.objects.get(signal_id=signal_id)
+        attachments = Attachment.objects.filter(_signal=signal)
+        serializer = _NestedAttachmentModelSerializer(attachments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class PrivateSignalAttachmentsViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,

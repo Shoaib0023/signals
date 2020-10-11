@@ -84,7 +84,7 @@
             <tr>
                 <td width="40%">
                   <p style="text-align: left;">
-                    <span>Geprint door {% if not user.is_anonymous %}{{ user.username }}{% else %}SIA Systeem{% endif %}</span>
+                    <span>Geprint door {% if not user.is_anonymous %}{{ user.username }}{% else %}SEDA Systeem{% endif %}</span>
                   </p>
                 </td>
                 <td width="60%">
@@ -108,17 +108,17 @@
         {% if signal.is_child %}
         <tr>
             <td>Hoofdmelding</td>
-            <td>: SIA-{{ signal.parent.id }}</td>
+            <td>: SEDA-{{ signal.parent.id }}</td>
         </tr>
         {% endif %}
         <tr>
             <td style="width: 200px;">Toelichting</td>
             <td>: {{ signal.text }}</td>
         </tr>
-        <tr>
+        <!-- <tr>
             <td>Overlast</td>
             <td>: {{ signal.incident_date_start|date:"d-m-Y" }} {{ signal.incident_date_start|date:"H:i" }}</td>
-        </tr>
+        </tr>-->
         <tr>
             <td>Stadsdeel</td>
             <td>: {{ signal.location.get_stadsdeel_display }}</td>
@@ -131,13 +131,13 @@
             <td>Gemeld op</td>
             <td>: {{ signal.created_at|date:"d-m-Y" }} {{ signal.created_at|date:"H:i" }}</td>
         </tr>
-        <tr>
+        <!--<tr>
             <td>Hoofdcategorie</td>
             <td>: {{ signal.category_assignment.category.parent.name }}</td>
-        </tr>
+        </tr> -->
         <tr>
-            <td>Subcategorie</td>
-            <td>: {{ signal.category_assignment.category.name }}</td>
+            <td>Categorie</td>
+            <td>: {{ signal.category_assignment.category.filter_label }}</td>
         </tr>
         <tr>
             <td>Urgentie</td>

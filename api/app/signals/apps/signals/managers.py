@@ -60,8 +60,8 @@ class SignalManager(models.Manager):
         priority_data = priority_data or {}
 
         # SIG-2513 Determine the stadsdeel
-        default_stadsdeel = location_data['stadsdeel'] if 'stadsdeel' in location_data else None
-        location_data['stadsdeel'] = _get_stadsdeel_code(location_data['geometrie'], default_stadsdeel)
+        #default_stadsdeel = location_data['stadsdeel'] if 'stadsdeel' in location_data else None
+        #location_data['stadsdeel'] = _get_stadsdeel_code(location_data['geometrie'], default_stadsdeel)
 
         # Create dependent model instances with correct foreign keys to Signal
         location = Location.objects.create(**location_data, _signal_id=signal.pk)

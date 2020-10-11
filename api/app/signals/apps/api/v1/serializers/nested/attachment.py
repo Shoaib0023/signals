@@ -10,4 +10,5 @@ class _NestedAttachmentModelSerializer(serializers.ModelSerializer):
             'file',
             'created_at',
             'is_image',
+            'is_issue_finish_image',
         )

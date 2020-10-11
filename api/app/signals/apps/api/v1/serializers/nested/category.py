@@ -67,7 +67,7 @@ class _NestedCategoryModelSerializer(SIAModelSerializer):
         #)
         departments = []
         for dept in obj.category.departments.filter(categorydepartment__is_responsible=True):
-            departments.append({"code": dept.code, "name": dept.name})
+            departments.append({"code": dept.code, "name": dept.name, "routed_to": dept.app})
 
         return departments
 

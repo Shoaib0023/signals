@@ -32,7 +32,8 @@ class PrivateDepartmentSerializerList(HALSerializer):
             'is_intern',
             'categories',
             'country',
-            'city'
+            'city',
+            'app',
         )
 
     def get_categories(self, obj):
@@ -165,6 +166,7 @@ class PrivateDepartmentSerializerDetail(HALSerializer):
             'categories',
             'country',
             'city',
+            'app',
         )
 
     def _save_category_department(self, instance, validated_data):

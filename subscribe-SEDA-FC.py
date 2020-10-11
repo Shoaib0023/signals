@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#!/usr/bin/env python
 import pika
 import requests
 import json
@@ -20,14 +19,13 @@ def callback(ch, method, properties, body):
     data = json.loads(body)['signals']
     url = data.pop('url', None)
     img_present = False
+    #print(json.loads(body))
 
     if url:
         img_present = True
         img = urlopen(url)
         path = urlparse(url).path
-        # print("Path : ", path)
         ext = splitext(path)[1]
-        # print("Ext : ", ext)
         print(img.headers)
         name = str(uuid.uuid4()) + ext
         # files = [
@@ -35,14 +33,13 @@ def callback(ch, method, properties, body):
         # ]
         files = {'report_pic': (name, img.read(), "multipart/form-data")}
 
-    api = 'http://facilitator.dev.mcc.kpnappfactory.nl/index.php/apinewchanges/submit_report/'
-    headers = {"Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIl9pZCI6IjVjZDI4M2JmMmI5MDRmNTUyYmIwMGJkNiIsImRldmljZSI6IkFuZHJvaWQiLCJ0b2tlbiI6ImNKS3lDajRtRjNjOkFQQTkxYkVNeDlEcVFDSFZ0NV90MV9oUUc0N204UE9HU1BlT3oxZ05JSlRMR3hyTzJOSWZCTWpUVENHejQ3ZmVEandLVFlOdW53d0xtX3JMN2psa3ZNZjNxNnNvaFk5V25odThtLUN1WmdUMVlBUzdudHhla2JCVGpKWmNRMUg2ckJ5MHFaMTFsM3pHIiwibGFuZ3VhZ2UiOiIxIn0"}
-
+    api = 'http://facilitator.dev.mcc.kpnappfactory.nl/index.php/apinewchanges/submit_report_api'
+   
     try:
         if img_present:
-            response = requests.post(api, headers=headers, data=data, files=files)
+            response = requests.post(api, data=data, files=files)
         else:
-            response = requests.post(api, data=data, headers=headers)
+            response = requests.post(api, data=data)
 
         print(response.status_code)
         print(response.text)

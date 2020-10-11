@@ -70,7 +70,7 @@ urlpatterns = [
     # path('v1/public/', include(public_router.urls)),
     path('v1/public/', include([
         path('signals/<str:signal_id>/attachments',
-             PublicSignalAttachmentsViewSet.as_view({'post': 'create'}),
+             PublicSignalAttachmentsViewSet.as_view({'get':'list' ,'post': 'create'}),
              name='public-signals-attachments'),
         # path('terms/categories/<str:slug>/sub_categories/<str:sub_slug>',
         #      ChildCategoryViewSet.as_view({'get': 'retrieve'}),
