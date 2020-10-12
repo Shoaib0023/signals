@@ -31,6 +31,12 @@ class Profile(CreatedUpdatedModel):
     # SIG-2016 Added a note field to the profile
     note = models.TextField(null=True, blank=True)
 
+    facilitator_role = models.CharField(max_length=255, null=True, blank=True)
+    district = models.ForeignKey('signals.District', on_delete=models.SET_NULL, null=True)
+    fac_user_id = models.CharField(max_length=255, blank=True, null=True)
+    fac_district_id = models.CharField(max_length=255, blank=True, null=True)
+    fac_neighbourhood_id  = models.CharField(max_length=255, blank=True, null=True)
+
     def __str__(self):
         return self.user.username
 

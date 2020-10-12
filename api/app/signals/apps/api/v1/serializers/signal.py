@@ -422,6 +422,10 @@ class PublicSignalSerializerDetail(HALSerializer):
         required=False
     )
 
+    location = _NestedLocationModelSerializer(
+        required=False,
+    )
+
     incident_date_start = serializers.DateTimeField(required=False)
     #id_mapping = IDMappingSerializer(required=False)
     text = serializers.CharField(required=False)
@@ -453,6 +457,7 @@ class PublicSignalSerializerDetail(HALSerializer):
             'urgency',
             'plan_time',
             'updates',
+            'location',
         )
 
     def get__display(self, obj):

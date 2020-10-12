@@ -16,6 +16,16 @@ STADSDEEL_ZUID = 'K'
 STADSDEEL_NIEUWWEST = 'F'
 STADSDEEL_AMSTERDAMSE_BOS = 'H'
 STADSDEEL_WEESP = 'W'
+STADSDEEL_LOOSDUINEN = 'Loosduinen'
+STADSDEEL_ESCAMP = 'Escamp'
+STADSDEEL_SEGBROEK = 'Segbroek'
+STADSDEEL_SCHEVENINGEN = 'Scheveningen'
+STADSDEEL_CENTRUM = 'Centrum'
+STADSDEEL_LAAK = 'Laak'
+STADSDEEL_HAAGSE_HOUT = 'Haagse hout'
+STADSDEEL_LEIDSCHENVEEN_YPENBURG = 'Leidschenveen-Ypenburg'
+
+
 STADSDELEN = (
     (STADSDEEL_CENTRUM, 'Centrum'),
     (STADSDEEL_WESTPOORT, 'Westpoort'),
@@ -27,6 +37,14 @@ STADSDELEN = (
     (STADSDEEL_NIEUWWEST, 'Nieuw-West'),
     (STADSDEEL_AMSTERDAMSE_BOS, 'Het Amsterdamse Bos'),
     (STADSDEEL_WEESP, 'Weesp'),
+    (STADSDEEL_LOOSDUINEN, 'Loosduinen'),
+    (STADSDEEL_ESCAMP, 'Escamp'),
+    (STADSDEEL_SEGBROEK, 'Segbroek'),
+    (STADSDEEL_SCHEVENINGEN, 'Scheveningen'),
+    (STADSDEEL_CENTRUM, 'Centrum'),
+    (STADSDEEL_LAAK, 'Laak'),
+    (STADSDEEL_HAAGSE_HOUT, 'Haagse hout'),
+    (STADSDEEL_LEIDSCHENVEEN_YPENBURG, 'Leidschenveen-Ypenburg'),
 )
 
 AREA_STADSDEEL_TRANSLATION = {
@@ -41,6 +59,14 @@ AREA_STADSDEEL_TRANSLATION = {
     'zuid': STADSDEEL_ZUID,
     'stadsdeel-zuid': STADSDEEL_ZUID,
     'weesp': STADSDEEL_WEESP,
+    'Loosduinen': STADSDEEL_LOOSDUINEN,
+    'Escamp': STADSDEEL_ESCAMP,
+    'Segbroek': STADSDEEL_SEGBROEK, 
+    'Scheveningen': STADSDEEL_SCHEVENINGEN,
+    'Centrum': STADSDEEL_CENTRUM, 
+    'Laak': STADSDEEL_LAAK, 
+    'Haagse hout': STADSDEEL_HAAGSE_HOUT, 
+    'Leidschenveen-Ypenburg': STADSDEEL_LEIDSCHENVEEN_YPENBURG,
 }
 
 _ADDRESS_FIELD_PREFIXES = (
@@ -74,7 +100,7 @@ class Location(CreatedUpdatedModel):
     )
 
     geometrie = models.PointField(name='geometrie')
-    stadsdeel = models.CharField(null=True, max_length=1, choices=STADSDELEN)
+    stadsdeel = models.CharField(null=True, max_length=30, choices=STADSDELEN)
 
     # we do NOT use foreign key, since we update
     # buurten as external data in a seperate process

@@ -23,6 +23,7 @@ from signals.apps.api.v1.views import (  # MLPredictCategoryView,  # V1 disabled
     SignalCityObjectViewSet,
     CategoryNameViewSet,
     SignalPlanUpdateViewSet,
+    PrivateStadsdeelViewSet,
 )
 from signals.apps.feedback.views import FeedbackViewSet, StandardAnswerViewSet
 from signals.apps.search.views import SearchView
@@ -89,6 +90,8 @@ urlpatterns = [
 
     # Private additions
     path('v1/private/', include([
+        path('get_stadsdeel/<str:post_code>', PrivateStadsdeelViewSet.as_view({'get': 'list'}), name="private-stadsdeel"),
+
         # Returns the details of the currently logged in user
         path('me/', UserViewSet.as_view({'get': 'me'}), name='auth-me'),
 

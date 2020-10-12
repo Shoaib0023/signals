@@ -42,7 +42,9 @@ from signals.apps.signals.models.city_object_assignment import CityObjectAssignm
 from signals.apps.signals.models.signal_city_object import SignalCityObject
 from signals.apps.signals.models.id_mapping import IDMapping
 from signals.apps.signals.models.signal_plan_update import SignalPlanUpdate
-
+from signals.apps.signals.models.district import District
+from signals.apps.signals.models.neighbourhood import Neighbourhood
+from signals.apps.signals.models.postcode import PostCode
 
 # Satisfy Flake8 (otherwise complaints about unused imports):
 __all__ = [
@@ -88,4 +90,7 @@ __all__ = [
     'SignalCityObject',
     'IDMapping',
     'SignalPlanUpdate',
+    'District',
+    'Neighbourhood',
+    'PostCode',
 ]
