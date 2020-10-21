@@ -78,8 +78,12 @@ _ADDRESS_FIELD_PREFIXES = (
     ('woonplaats', ' ')
 )
 
+_NEW_ADDRESS_FIELD_PREFIXES = (                           # added new address field prefixes SHO:200
+    ('openbare_ruimte', ''),
+)
 
-def get_address_text(location, field_prefixes=_ADDRESS_FIELD_PREFIXES):
+
+def get_address_text(location, field_prefixes=_NEW_ADDRESS_FIELD_PREFIXES):           # changes SHO:200
     """Generate address text, shortened if needed."""
 
     address_text = ''
@@ -115,8 +119,8 @@ class Location(CreatedUpdatedModel):
     @property
     def short_address_text(self):
         # no postal code, no municipality
-        field_prefixes = copy.deepcopy(_ADDRESS_FIELD_PREFIXES)
-        field_prefixes = field_prefixes[:-2]
+        field_prefixes = copy.deepcopy(_NEW_ADDRESS_FIELD_PREFIXES)             # changed SHO:200
+        #field_prefixes = field_prefixes[:-2]                                   # removed SHO:200
 
         return get_address_text(self, field_prefixes)
 
@@ -149,13 +153,17 @@ def _get_description_of_update_location(location_id):
 
     # Deal with address text or coordinates
     if location.address and isinstance(location.address, dict):
-        field_prefixes = (
+        '''field_prefixes = (
             ('openbare_ruimte', ''),
             ('huisnummer', ' '),
             ('huisletter', ''),
             ('huisnummer_toevoeging', '-'),
             ('woonplaats', '\n')
+        )'''
+        field_prefixes = (                                                              # changed SHO:200
+            ('openbare_ruimte', ''), 
         )
+
         desc += get_address_text(location, field_prefixes)
     else:
         desc += 'Locatie is gepind op de kaart\n{}, {}'.format(

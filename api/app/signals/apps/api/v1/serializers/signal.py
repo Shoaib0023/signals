@@ -45,6 +45,7 @@ from signals.apps.api.v1.serializers.signal_plan_update import SignalPlanUpdateS
 
 from signals.apps.signals.models.country import Country
 from signals.apps.signals.models.city import City
+from signals.apps.signals.models.id_mapping import IDMapping
 
 
 
@@ -121,6 +122,7 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
         required=False
     )
 
+    mb_mapping = serializers.SerializerMethodField(required=False)
     has_attachments = serializers.SerializerMethodField()
 
     extra_properties = SignalExtraPropertiesField(
@@ -167,11 +169,21 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
             'urgency',
             'plan_time',
             'updates',
+            'mb_mapping',
+            'updated_by',
         )
         read_only_fields = (
             'id',
             'has_attachments',
         )
+
+    def get_mb_mapping(self, obj):
+        if IDMapping.objects.filter(seda_signal_id=obj.signal_id).exists():
+            return IDMappingSerializer(
+                    IDMapping.objects.get(seda_signal_id=obj.signal_id)
+            ).data
+        
+        return None
 
     def get_has_attachments(self, obj):
         return obj.attachments.exists()
@@ -330,6 +342,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
             'urgency',
             'plan_time',
             'updates',
+            'updated_by',
         )
         read_only_fields = (
             'created_at',
@@ -397,6 +410,7 @@ class PrivateSignalSerializerList(HALSerializer, AddressValidationMixin):
 
 class PublicSignalSerializerDetail(HALSerializer):
     #status = _NestedPublicStatusModelSerializer(required=False)
+    mb_mapping = serializers.SerializerMethodField(required=False)
     status = _NestedStatusModelSerializer(required=False)
     serializer_url_field = PublicSignalLinksField
     _display = serializers.SerializerMethodField(method_name='get__display')
@@ -458,10 +472,20 @@ class PublicSignalSerializerDetail(HALSerializer):
             'plan_time',
             'updates',
             'location',
+            'mb_mapping',
+            'updated_by',
         )
 
     def get__display(self, obj):
         return obj.sia_id
+
+    def get_mb_mapping(self, obj):
+        if IDMapping.objects.filter(seda_signal_id=obj.signal_id).exists():
+            return IDMappingSerializer(
+                    IDMapping.objects.get(seda_signal_id=obj.signal_id)
+            ).data
+        
+        return None
 
 
     def get_country(self, obj):
@@ -575,6 +599,7 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
             'urgency',
             'plan_time',
             'updates',
+            'updated_by',
         )
 
     def validate(self, data):
@@ -590,6 +615,7 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        print("Validated data : ", validated_data)
         location_data = validated_data.pop('location')
         reporter_data = validated_data.pop('reporter')
         category_assignment_data = validated_data.pop('category_assignment')
@@ -600,7 +626,7 @@ class PublicSignalCreateSerializer(serializers.ModelSerializer):
         if not status_data:
             status_data = {"state": workflow.GEMELD}
 
-        signal = Signal.actions._create_initial_no_transaction(
+        signal = Signal.actions.create_initial(
             validated_data, location_data, status_data, category_assignment_data, reporter_data, country_data, city_data, city_object_data)
         return signal
 

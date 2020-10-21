@@ -1,10 +1,11 @@
 from django.contrib.gis.db import models
 
 APPS = [
-    ('MB', 'Mobile-Beherdeer'),
+    ('MB', 'Mobiele Beheerder'),
     ('FC', 'Facilitator'),
     ('MCC', 'MyCleanCity'),
-    ('SEDA', 'SEDA') 
+    ('SEDA', 'SEDA'),
+    ('ESB', 'ESB')
 ]
 
 class Department(models.Model):

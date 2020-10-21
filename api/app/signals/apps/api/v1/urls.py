@@ -42,6 +42,7 @@ public_router.register(r'public/areas', PublicAreasViewSet, basename='public-are
 public_router.register(r'public/city_object', CityObjectViewSet, basename='city_object')
 public_router.register(r'public/signal/city_object', SignalCityObjectViewSet, basename='signal_city_object')
 public_router.register(r'public/signal_plan/update', SignalPlanUpdateViewSet, basename='signal-plan-update')
+public_router.register(r'public/idmapping', IDMappingViewset, basename="id-mapping")
 
 # Private API
 private_router = SignalsRouterVersion1()
@@ -83,7 +84,6 @@ urlpatterns = [
         path('questions/',
              PublicQuestionViewSet.as_view({'get': 'list'}),
              name='question-detail'),
-        path('idmapping/', IDMappingViewset.as_view({'get': 'list', 'post':'create'}), name="id-mapping"),
         # V1 disabled for now
         # path('category/prediction', MLPredictCategoryView.as_view({'get': 'retrieve'}), name='ml-predict-category'),
     ])),

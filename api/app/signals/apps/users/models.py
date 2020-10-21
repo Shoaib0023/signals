@@ -36,6 +36,9 @@ class Profile(CreatedUpdatedModel):
     fac_user_id = models.CharField(max_length=255, blank=True, null=True)
     fac_district_id = models.CharField(max_length=255, blank=True, null=True)
     fac_neighbourhood_id  = models.CharField(max_length=255, blank=True, null=True)
+    mb_district_id = models.CharField(max_length=255, blank=True, null=True)
+    mb_neighbourhood_id = models.CharField(max_length=255, blank=True, null=True)
+    mb_user_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.user.username

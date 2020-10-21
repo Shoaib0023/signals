@@ -30,11 +30,11 @@ class History(models.Model):
     def get_action(self):
         """Generate text for the action field that can serve as title in UI."""
         if self.what == 'UPDATE_STATUS':
-            return f'Update status naar: {dict(STATUS_CHOICES).get(self.extra, "Onbekend")}'
+            return f'Status bijgewerkt naar: {dict(STATUS_CHOICES).get(self.extra, "Onbekend")}'
         elif self.what == 'UPDATE_PRIORITY':
             # SIG-1727 ad-hoc translation, must match signals.Priority model!
             translated = {'high': 'Hoog', 'normal': 'Normaal', 'low': 'Laag'}.get(self.extra, 'Onbekend')
-            return f'Urgentie update naar: {translated}'
+            return f'Urgentie bijgewerkt naar: {translated}'
         elif self.what == 'UPDATE_CATEGORY_ASSIGNMENT':
             return f'Categorie gewijzigd naar: {self.extra}'
         elif self.what == 'CREATE_NOTE' or self.what == 'UPDATE_LOCATION':
@@ -42,7 +42,7 @@ class History(models.Model):
         elif self.what == 'RECEIVE_FEEDBACK':
             return 'Feedback van melder ontvangen'
         elif self.what == 'UPDATE_TYPE_ASSIGNMENT':
-            return f'Type update naar: {_history_translated_action(self.extra)}'
+            return f'Soort update bijgewerkt naar: {_history_translated_action(self.extra)}'
         elif self.what == 'UPDATE_DIRECTING_DEPARTMENTS_ASSIGNMENT':
             return f'Regie voerende afdeling/afdelingen gewijzigd naar: {self.extra}'
         return 'Actie onbekend.'

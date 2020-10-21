@@ -35,6 +35,7 @@ class PublicSignalViewSet(PublicSignalGenericViewSet):
         raise Http404
 
     def create(self, request):
+        print("Public View called : ", request.data)
         serializer = PublicSignalCreateSerializer(
         data=request.data, context=self.get_serializer_context())
         serializer.is_valid(raise_exception=True)

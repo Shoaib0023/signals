@@ -28,6 +28,7 @@ class Signal(CreatedUpdatedModel):
     webform_kenmark = models.CharField(max_length=20, null=True, blank=True)
     mb_report_id = models.CharField(max_length=255, null=True, blank=True)
     facilitator_report_id = models.CharField(max_length=255, null=True, blank=True)
+    updated_by = models.CharField(max_length=100, null=True, blank=True)
 
     # report plan fields 
     report_days = models.CharField(max_length=255, null=True, blank=True)

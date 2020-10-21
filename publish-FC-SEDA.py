@@ -39,97 +39,106 @@ def checkFacilitatorChange():
 
     seda_api = 'http://52.200.189.81:8000/signals/v1/public/signals/'
     api = 'http://facilitator.dev.mcc.kpnappfactory.nl/index.php/apinewchanges/cronapi'
-
     payload = {'startDate': startDate  , 'endDate': endDate}
-    response = requests.post(api, data=payload)
-    print(response.status_code)
-    print(len(response.json()["data"]))
 
-    objects = response.json()["data"]
-    for obj in objects:
-        # print(obj["plan_time"])
-        # print(obj["team_emp_name"])
-        seda_id = obj["sedaId"]
-        print(seda_id)
-        if seda_id == '':
-            continue
+    try:
+        response = requests.post(api, data=payload)
+        print(response.status_code)
+        print(len(response.json()["data"]))
 
-        res_seda = requests.get(f'http://ec2-52-200-189-81.compute-1.amazonaws.com:8000/signals/v1/public/signals/{seda_id}')
-        signal = res_seda.json()
+        objects = response.json()["data"]
+        for obj in objects:
+            # print(obj["plan_time"])
+            # print(obj["team_emp_name"])
+            seda_id = obj["sedaId"]
+            print(seda_id)
+            if seda_id == '':
+                continue
 
-        #? Seda Signal details
-        text = signal["text"]
-        updates = signal["updates"]
-        state = signal["status"]["state"]
-        plan_time = signal["plan_time"]
-        report_days = signal["report_days"]
-        urgency = signal["urgency"]
-        forman_emp_name = signal["forman_emp_name"]
+            res_seda = requests.get(f'http://ec2-52-200-189-81.compute-1.amazonaws.com:8000/signals/v1/public/signals/{seda_id}')
+            signal = res_seda.json()
 
-        #? Facilitator Report details
-        descriptions = obj["description"]
-        images = obj["issue_image"]
+            #? Seda Signal details
+            text = signal["text"]
+            updates = signal["updates"]
+            state = signal["status"]["state"]
+            plan_time = signal["plan_time"]
+            report_days = signal["report_days"]
+            urgency = signal["urgency"]
+            forman_emp_name = signal["forman_emp_name"]
+
+            #? Facilitator Report details
+            descriptions = obj["description"]
+            images = obj["issue_image"]
 
 
-        #? Checks if report is planned
-        if obj["report_status"] == 1:
-            if state != 'b':
+            #? Checks if report is planned
+            if obj["report_status"] == 1:
+                if state != 'b':
+                    payload = {
+                        "status": {
+                            "state": "b",
+                            "state_display": "BEHANDELING",
+                            "text": "Melding is nu in behandeling"
+                        },
+                        "report_days": obj["report_days"],
+                        "plan_time": obj["plan_time"],
+                        "urgency": obj["urgency"],
+                        "forman_emp_name": obj["team_emp_name"],
+                        "updated_by": "Facilitator"
+                    }
+
+                    response = requests.put(f'{seda_api}{seda_id}', json=payload)                # update planned report fields in SEDA
+                    print(response.status_code)
+                    # print(response.text)
+                    if response.status_code == 200:
+                        print("Report is Planned in Facilitator")
+
+
+            i = len(updates) + 1
+            j = len(descriptions)
+            
+            while i < j:
+                print(i, j)
+                new_description = descriptions[i]
+                new_image = images[i]
+
+                payload = {
+                    'signal_id': seda_id,
+                    'description': new_description
+                }
+
+                img_url = 'http://facilitator.dev.mcc.kpnappfactory.nl/uploadimages/reportedIssue/' + new_image
+                print("Image Url : ", img_url)
+                img = urlopen(img_url)
+                files = {'image': img.read()}
+                
+                res = requests.post('http://ec2-52-200-189-81.compute-1.amazonaws.com:8000/signals/v1/public/signal_plan/update/', data=payload, files=files)
+                print("Updated : ", res.status_code)
+                print(res.text)
+
+                i += 1
+                
+
+            #? Checks if report is closed
+            if obj["report_status"] == 2:
                 payload = {
                     "status": {
-                        "state": "b",
-                        "state_display": "BEHANDELING",
-                        "text": "BEHANDELING"
+                        "state": "o",
+                        "state_display": "AFGEHANDELD",
+                        "text": "Melding is afgehandeld"
                     },
-                    "report_days": obj["report_days"],
-                    "plan_time": obj["plan_time"],
-                    "urgency": obj["urgency"],
-                    "forman_emp_name": obj["team_emp_name"]
+                    "updated_by": "Facilitator"
                 }
 
-                response = requests.put(f'{seda_api}{seda_id}', json=payload)
+                response = requests.put(f'{seda_api}{seda_id}', json=payload)         # updating the status of report to closed 
                 print(response.status_code)
-                # print(response.text)
                 if response.status_code == 200:
-                    print("Report is Planned in Facilitator")
+                    print("Report is closed in Facilitator")
 
 
-        i = len(updates) + 1
-        j = len(descriptions)
- 
-        while i < j:
-            print(i, j)
-            new_description = descriptions[i]
-            new_image = images[i]
-
-            payload = {
-                'signal_id': seda_id,
-                'description': new_description
-            }
-
-            img_url = 'http://facilitator.dev.mcc.kpnappfactory.nl/uploadimages/reportedIssue/' + new_image
-            print("Image Url : ", img_url)
-            img = urlopen(img_url)
-            files = {'image': img.read()} 
-            res = requests.post('http://ec2-52-200-189-81.compute-1.amazonaws.com:8000/signals/v1/public/signal_plan/update/', data=payload, files=files)
-            print("Updated : ", res.status_code)
-            print(res.text)
-
-            i += 1
-
-        #? Checks if report is closed
-        if obj["report_status"] == 2:
-            payload = {
-                "status": {
-                    "state": "o",
-                    "state_display": "AFGEHANDELD",
-            		"text": "Signal is Closed"
-                }
-            }
-
-            response = requests.put(f'{seda_api}{seda_id}', json=payload)
-            print(response.status_code)
-            if response.status_code == 200:
-                print("Report is closed in Facilitator")
+    except Exception as error:
+        print("Some Error occured : ", error)
 
 
 
@@ -141,7 +150,7 @@ def checkFacilitatorChange():
 
 
 print("  [*] Waiting for some change in Facilitator. To exit press CTRL+C")
-schedule.every(2).minutes.do(checkFacilitatorChange)
+schedule.every(1).minute.do(checkFacilitatorChange)
 while True:
     schedule.run_pending()
     time.sleep(1)

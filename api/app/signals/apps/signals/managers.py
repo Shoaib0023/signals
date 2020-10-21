@@ -669,6 +669,11 @@ class SignalManager(models.Manager):
                 from signals.apps.signals.models import Signal
                 locked_signal.plan_time = data['plan_time']
                 locked_signal.save()
+
+            if "updated_by" in data:
+                from signals.apps.signals.models import Signal
+                locked_signal.updated_by = data['updated_by']
+                locked_signal.save()
  
             # Send out all Django signals:
             transaction.on_commit(lambda: send_signals(to_send))

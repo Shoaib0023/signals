@@ -17,12 +17,14 @@ from signals.apps.signals.models import (
     CityObject,
     History,
     Attachment,
+    Location,
 )
 from signals.apps.signals.models.category_translation import CategoryTranslation
 
 admin.site.register(CityObject)
 admin.site.register(History)
 admin.site.register(Attachment)
+admin.site.register(Location)
 
 class CategoryQuestionInline(admin.StackedInline):
     raw_id_fields = ('category', 'question',)

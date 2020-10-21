@@ -17,9 +17,9 @@ parameters = pika.ConnectionParameters(HOST, 5672, 'vhost', credentials)
 def callback(ch, method, properties, body):
     print("Creating a report in Facilitator ....")
     data = json.loads(body)['signals']
+    print(data)
     url = data.pop('url', None)
     img_present = False
-    #print(json.loads(body))
 
     if url:
         img_present = True
