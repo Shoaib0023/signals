@@ -42,6 +42,7 @@ from signals.apps.api.v1.serializers.city import CitySerializer
 from signals.apps.api.v1.serializers.city_object import CityObjectSerializer
 from signals.apps.api.v1.serializers.id_mapping import IDMappingSerializer
 from signals.apps.api.v1.serializers.signal_plan_update import SignalPlanUpdateSerializer
+from signals.apps.api.v1.serializers.image_category import ImageCategorySerializer
 
 from signals.apps.signals.models.country import Country
 from signals.apps.signals.models.city import City
@@ -124,6 +125,7 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
 
     mb_mapping = serializers.SerializerMethodField(required=False)
     has_attachments = serializers.SerializerMethodField()
+    image_category = ImageCategorySerializer(required=False)
 
     extra_properties = SignalExtraPropertiesField(
         required=False,
@@ -171,6 +173,7 @@ class PrivateSignalSerializerDetail(HALSerializer, AddressValidationMixin):
             'updates',
             'mb_mapping',
             'updated_by',
+            'image_category',
         )
         read_only_fields = (
             'id',
@@ -443,6 +446,7 @@ class PublicSignalSerializerDetail(HALSerializer):
     incident_date_start = serializers.DateTimeField(required=False)
     #id_mapping = IDMappingSerializer(required=False)
     text = serializers.CharField(required=False)
+    image_category = ImageCategorySerializer(required=False)
 
     class Meta:
         model = Signal
@@ -474,6 +478,7 @@ class PublicSignalSerializerDetail(HALSerializer):
             'location',
             'mb_mapping',
             'updated_by',
+            'image_category',
         )
 
     def get__display(self, obj):
