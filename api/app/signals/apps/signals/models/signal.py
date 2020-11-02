@@ -39,6 +39,9 @@ class Signal(CreatedUpdatedModel):
     # report plan updates many to many relationship
     updates = models.ManyToManyField('signals.SignalPlanUpdate', blank=True)
 
+    # image category
+    image_category = models.ForeignKey('signals.ImageCategory', null=True, related_name='signal', on_delete=models.SET_NULL)
+
     # we need an unique id for external systems.
     # TODO SIG-563 rename `signal_id` to `signal_uuid` to be more specific.
     signal_id = models.UUIDField(default=uuid.uuid4, db_index=True)

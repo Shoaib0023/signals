@@ -45,6 +45,8 @@ from signals.apps.signals.models.signal_plan_update import SignalPlanUpdate
 from signals.apps.signals.models.district import District
 from signals.apps.signals.models.neighbourhood import Neighbourhood
 from signals.apps.signals.models.postcode import PostCode
+from signals.apps.signals.models.image_category import ImageCategory
+
 
 # Satisfy Flake8 (otherwise complaints about unused imports):
 __all__ = [
@@ -93,4 +95,5 @@ __all__ = [
     'District',
     'Neighbourhood',
     'PostCode',
+    'ImageCategory',
 ]

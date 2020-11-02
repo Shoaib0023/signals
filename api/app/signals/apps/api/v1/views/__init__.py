@@ -30,6 +30,8 @@ from signals.apps.api.v1.views.signal_plan_update import SignalPlanUpdateViewSet
 from signals.apps.api.v1.views.stadsdeel import PrivateStadsdeelViewSet
 from signals.apps.api.v1.views.district import PrivateDistrictViewset
 from signals.apps.api.v1.views.neighbourhood import PrivateNeighbourhoodViewset
+from signals.apps.api.v1.views.postcode import PrivatePostCodeViewset
+from signals.apps.api.v1.views.image_category import PublicImageCategoryViewset
 
 
 __all__ = (
@@ -59,4 +61,6 @@ __all__ = (
     'PrivateStadsdeelViewSet',
     'PrivateDistrictViewset',
     'PrivateNeighbourhoodViewset',
+    'PublicImageCategoryViewset',
+    'PrivatePostCodeViewset',
 )
