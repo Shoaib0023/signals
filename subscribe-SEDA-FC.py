@@ -45,6 +45,8 @@ def callback(ch, method, properties, body):
         #print(response.text)
         if response.status_code == 201:
             print("Created.....")
+        else:
+            print(response.text) 
 
     except:
         print("Image is not passed !!!")

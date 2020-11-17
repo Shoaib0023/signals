@@ -18,7 +18,7 @@ class PublicImageCategoryViewset(mixins.ListModelMixin, mixins.CreateModelMixin,
         raise Http404()
 
     def create(self, request):
-        signal_id = request.data.pop("signal_id")
+        signal_id = request.data["signal_id"]
         signal = Signal.objects.get(signal_id=signal_id)
 
         serializer = ImageCategorySerializer(data=request.data)

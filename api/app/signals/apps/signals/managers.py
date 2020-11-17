@@ -8,6 +8,8 @@ from signals.apps.signals.models.city import City
 
 from signals.apps.signals.models.city_object import CityObject
 
+from threading import Thread
+import requests
 # Declaring custom Django signals for our `SignalManager`.
 
 create_initial = DjangoSignal(providing_args=['signal_obj'])
@@ -283,6 +285,28 @@ class SignalManager(models.Manager):
 
     def add_attachment(self, file, signal, issue_finish):
         from .models import Attachment
+
+        #! Using Threading to get Image Categories
+        def do_work(signal_id, file):
+            print("Processing .....")
+            try:
+                API = 'http://ec2-3-94-95-49.compute-1.amazonaws.com:8888/detect'
+                payload = {
+                   'signal_id': signal_id
+                }
+                files = {
+                   'image': file
+                }
+
+                response = requests.post(API, data=payload, files=files)
+                if response.status_code == 200:
+                    print(response.json())
+
+            except Exception as err:
+                print("Error : ", err)
+
+        thread = Thread(target=do_work, kwargs={'signal_id': signal.signal_id, 'file': file})
+        thread.start()
 
         with transaction.atomic():
             # Do not take lock, uploads are slow and the lock is not needed for
