@@ -88,7 +88,7 @@ pycodestyle==2.5.0
 pycparser==2.19
 pyflakes==2.1.1
 pygelf==0.3.6
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyparsing==2.4.6
 Pyphen==0.9.5
 pyrsistent==0.15.7
