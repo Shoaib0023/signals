@@ -61,7 +61,7 @@ itypes==1.1.0
 Jinja2==2.11.1
 jsonpointer==2.0
 jsonschema==3.2.0
-jwcrypto==0.6.0
+jwcrypto==1.4
 keystoneauth1==3.18.0
 kombu==4.6.7
 lxml==4.5.0
